@@ -4,16 +4,12 @@
 
     <item android:title="Movies"
         android:icon="@drawable/ticket_1"
-        android:id="@+id/moviesFragment"
-
+        android:id="@+id/HomeFragment"
         />
     <item android:title="Search"
         android:icon="@drawable/search_outlined"
         android:id="@+id/searchFragment"
         />
-    <item android:title="Bookmarks"
-        android:icon="@drawable/bookmark_outlined"
-        android:id="@+id/bookMarksFragment"
-        />
+
 
 </menu>

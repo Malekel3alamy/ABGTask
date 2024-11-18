@@ -1,108 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.core.widget.NestedScrollView
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:background="@color/background_color"
-    android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/nowPlayingFragment"
         >
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/nowPlayingTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif-condensed-light"
-            android:text="NowPlaying"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerNowPlaying"
             android:layout_width="match_parent"
-            android:layout_height="205dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:clipToPadding="false"
-            app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/nowPlayingTV"
-            tools:listitem="@layout/movie_item"
-            app:layout_constraintVertical_bias="0.0" />
-
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/topRatedTV"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:fontFamily="sans-serif-condensed-light"
-            android:text="TopRated"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recyclerNowPlaying"
-
-            />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerTopRated"
-            android:layout_width="match_parent"
-            android:layout_height="205dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
             android:clipToPadding="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:paddingTop="10dp"
+            android:paddingStart="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/topRatedTV"
-            tools:listitem="@layout/movie_item"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/top_rated_and_upcoming_movie_item"
             app:layout_constraintVertical_bias="0.0" />
 
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/upcomingTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:fontFamily="sans-serif-condensed-medium"
-            android:text="UpComing"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recyclerTopRated"
-
-            />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerUpcoming"
-            android:layout_width="match_parent"
-            android:layout_height="205dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:clipToPadding="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/upcomingTV"
-            tools:listitem="@layout/movie_item"
-            app:layout_constraintVertical_bias="0.0" />
 
         <include
             android:id="@+id/itemMoviesError"
@@ -127,10 +49,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.453"
-            app:layout_constraintStart_toStartOf="@+id/recyclerNowPlaying"
-            app:layout_constraintTop_toTopOf="@+id/recyclerNowPlaying"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.834"
             tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>

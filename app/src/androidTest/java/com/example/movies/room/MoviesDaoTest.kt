@@ -1,10 +1,12 @@
 package com.example.movies.room
 
+import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import com.androiddevs.shoppinglisttestingyt.getOrAwaitValue
 import com.example.movies.models.Movie
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
@@ -59,8 +61,10 @@ class MoviesDaoTest {
         dao.upsert(movie)
 
         val resultMovie = dao.getMovie(1)
+        Log.d("MovieResult",resultMovie.toString())
         val resultMovies = dao.getAllMovies()
-            assertThat(resultMovies[0]).isEqualTo(resultMovie)
+
+            assertThat(resultMovies.getOrAwaitValue()[0]).isEqualTo(resultMovie)
     }
 
     @Test
@@ -80,7 +84,7 @@ class MoviesDaoTest {
         dao.upsert(movie)
         dao.deleteAllMovies()
         val resultMovies = dao.getAllMovies()
-        assertThat(resultMovies).isEmpty()
+        assertThat(resultMovies.getOrAwaitValue()).isEmpty()
     }
 
     @Test
@@ -91,7 +95,7 @@ class MoviesDaoTest {
 
         val resultMovie = dao.getMovie(1)
         val resultMovies = dao.getAllMovies()
-        assertThat(resultMovie).isEqualTo(resultMovies[0])
+        assertThat(resultMovie).isEqualTo(resultMovies.getOrAwaitValue()[0])
 
     }
 

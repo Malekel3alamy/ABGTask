@@ -52,7 +52,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:id="@+id/numericRating"
+            android:id="@+id/movie_item_numericRating"
             android:text="7.2"
             android:gravity="center"
             android:textColor="@color/white"
@@ -65,7 +65,7 @@
             app:layout_constraintTop_toTopOf="@id/movie_image" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/movie_titleBookmark"
+            android:id="@+id/movie_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

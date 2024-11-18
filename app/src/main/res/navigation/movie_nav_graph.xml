@@ -25,12 +25,6 @@
         <action
             android:id="@+id/action_nowPlayingFragment_to_moviesFragment"
             app:destination="@id/moviesFragment" />
-        <action
-            android:id="@+id/action_nowPlayingFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
-        <action
-            android:id="@+id/action_nowPlayingFragment_to_bookMarksFragment"
-            app:destination="@id/bookMarksFragment" />
     </fragment>
 
     <fragment
@@ -41,20 +35,43 @@
         <action
             android:id="@+id/action_searchFragment_to_moviesFragment"
             app:destination="@id/moviesFragment" />
-        <action
-            android:id="@+id/action_searchFragment_to_nowPlayingFragment"
-            app:destination="@id/nowPlayingFragment" />
     </fragment>
     <fragment
-        android:id="@+id/bookMarksFragment"
-        android:name="com.example.movies.ui.fragments.BookMarksFragment"
-        android:label="fragment_book_marks"
-        tools:layout="@layout/fragment_book_marks" >
+        android:id="@+id/topRatedFragment2"
+        android:name="com.example.movies.ui.fragments.TopRatedFragment"
+        android:label="TopRatedFragment"
+        tools:layout="@layout/fragment_top_rated"
+        >
         <action
-            android:id="@+id/action_bookMarksFragment_to_moviesFragment"
+            android:id="@+id/action_topRatedFragment_to_moviesFragment"
             app:destination="@id/moviesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/upComingFragment2"
+        android:name="com.example.movies.ui.fragments.UpComingFragment"
+        android:label="fragment_up_coming"
+        tools:layout="@layout/fragment_up_coming" >
         <action
-            android:id="@+id/action_bookMarksFragment_to_nowPlayingFragment"
-            app:destination="@id/nowPlayingFragment" />
+            android:id="@+id/action_upComingFragment_to_moviesFragment"
+            app:destination="@id/moviesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/HomeFragment"
+        android:name="com.example.movies.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_HomeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/popularFragment2"
+        android:name="com.example.movies.ui.fragments.PopularFragment"
+        android:label="PopularFragment"
+        tools:layout="@layout/fragment_popular"
+        >
+        <action
+            android:id="@+id/action_popularFragment_to_moviesFragment"
+            app:destination="@id/moviesFragment" />
     </fragment>
 </navigation>

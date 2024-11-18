@@ -1,10 +1,13 @@
 package com.example.movies.di
 
 import android.content.Context
+import com.example.movies.repo.MoviesRepo
+import com.example.movies.repo.MoviesRepoInrerface
 import com.example.movies.room.MoviesDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -19,5 +22,12 @@ object RoomDatabaseModule {
 
         return MoviesDatabase.getInstance(context)
 
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideMoviesRepoInterface (db:MoviesDatabase) : MoviesRepoInrerface{
+        return MoviesRepo(db)
     }
 }

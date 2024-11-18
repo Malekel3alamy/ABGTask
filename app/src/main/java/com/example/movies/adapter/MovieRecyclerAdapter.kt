@@ -20,13 +20,13 @@ class MovieRecyclerAdapter : PagingDataAdapter<Movie, com.example.movies.adapter
     class MyViewHolder (val view : View) : ViewHolder(view){
 
         val movieImage = view.findViewById<ImageView>(R.id.movie_image)
-        val title      = view.findViewById<TextView>(R.id.movie_titleBookmark)
+        val title      = view.findViewById<TextView>(R.id.movie_item_title)
        // val date   = view.findViewById<TextView>(R.id.date)
-        val tvRating = view.findViewById<TextView>(R.id.numericRating)
+        val tvRating = view.findViewById<TextView>(R.id.movie_item_numericRating)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.movie_item,parent,false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.top_rated_and_upcoming_movie_item,parent,false)
 
         return MyViewHolder(itemView)
     }

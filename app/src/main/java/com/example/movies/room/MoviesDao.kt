@@ -18,7 +18,7 @@ interface MoviesDao {
     suspend fun upsert(result :Movie)
 
     @Query(" SELECT * FROM  movies")
-    suspend fun getAllMovies() : List<Movie>
+     fun getAllMovies() : LiveData<List<Movie>>
     @Query("SELECT * FROM movies WHERE id = :id")
     suspend fun getMovie(id:Int) : Movie
 

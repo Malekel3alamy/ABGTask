@@ -14,16 +14,15 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.movies.R
 import com.example.movies.models.Movie
-import java.time.format.DateTimeFormatter
 
 class NowPlayingMoviesAdapter: PagingDataAdapter<Movie, NowPlayingMoviesAdapter.MyViewHolder>(
     differCallback ) {
     class MyViewHolder (val view : View) : ViewHolder(view){
 
         val movieImage = view.findViewById<ImageView>(R.id.movie_image)
-        val title      = view.findViewById<TextView>(R.id.movie_titleBookmark)
+        val title      = view.findViewById<TextView>(R.id.movie_item_title)
        // val date   = view.findViewById<TextView>(R.id.date)
-        val tvRating = view.findViewById<TextView>(R.id.numericRating)
+        val tvRating = view.findViewById<TextView>(R.id.movie_item_numericRating)
 
     }
 

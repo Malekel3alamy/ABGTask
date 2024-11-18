@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movies.R
-import com.example.movies.adapter.BookmarksAdapter
 import com.example.movies.adapter.MovieRecyclerAdapter
 import com.example.movies.adapter.SearchAdapter
 import com.example.movies.databinding.FragmentSearchBinding
@@ -33,9 +33,11 @@ class SearchFragment() : Fragment(R.layout.fragment_search) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSearchBinding.bind(view)
-        (activity as MainActivity).hideToolbarAndNavigationView()
+
 
         setUpRecycler()
+
+        // handle user click on movie item
         moviesAdapter.onMovieClick={ movie ->
 
             val bundle = Bundle().apply {
@@ -89,7 +91,7 @@ class SearchFragment() : Fragment(R.layout.fragment_search) {
 
         binding.rvSearch.apply {
             adapter = moviesAdapter
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+            layoutManager = GridLayoutManager(requireContext(),2)
 
         }
     }

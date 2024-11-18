@@ -23,7 +23,10 @@ import com.example.movies.paging.SearchMoviesPagingSource
 import com.example.movies.paging.TopRatedMoviesPagingSource
 import com.example.movies.paging.UpComingMoviesPagingSource
 import com.example.movies.repo.MoviesRepo
+import com.example.movies.repo.MoviesRepoInrerface
+import com.example.movies.room.MoviesDatabase
 import com.example.movies.utils.Resources
+import com.example.movies.utils.app
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
@@ -32,31 +35,32 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class MoviesViewModel @Inject constructor( private val moviesRepo: MoviesRepo) : ViewModel() {
+class MoviesViewModel @Inject constructor( private val moviesRepo:  MoviesRepoInrerface) : ViewModel() {
 
-    var detailsResponse =  MutableLiveData<DetailsResponse>()
-
+    var detailsResponse =  MutableLiveData<Resources<DetailsResponse>>()
 
     var roomMovies : MutableLiveData<List<Movie>>? = null
 
+    var searchMovies :  Flow<PagingData<Movie>>? = null
 
-    val popularMovies = Pager(PagingConfig(1)){
+
+    val popularMovies = Pager(PagingConfig(5)){
         PopularMoviesPagingSource(moviesRepo)
     }.flow.cachedIn(viewModelScope)
 
-    val nowPlayingMovies = Pager(PagingConfig(1)){
+    val nowPlayingMovies = Pager(PagingConfig(5)){
         NowPlayingMoviesPagingSource(moviesRepo)
     }.flow.cachedIn(viewModelScope)
 
-    val topRatedMovies = Pager(PagingConfig(1)){
+    val topRatedMovies = Pager(PagingConfig(5)){
         TopRatedMoviesPagingSource(moviesRepo)
     }.flow.cachedIn(viewModelScope)
 
-    val upcomingMovies = Pager(PagingConfig(1)){
+    val upcomingMovies = Pager(PagingConfig(5)){
         UpComingMoviesPagingSource(moviesRepo)
     }.flow.cachedIn(viewModelScope)
 
-    var searchMovies :  Flow<PagingData<Movie>>? = null
+
 
 fun searchMovie(keyword: String){
      searchMovies = Pager(PagingConfig(1)){
@@ -69,8 +73,13 @@ fun searchMovie(keyword: String){
     // get Movie Details
 
     fun getMovieDetails(movie_id:Int) = viewModelScope.launch {
+        if (movie_id > 0 && movie_id != null){
+            detailsResponse.postValue(Resources.Loading())
+            detailsResponse.postValue( moviesRepo.getDetails(movie_id))
+        }else{
+            detailsResponse.postValue(Resources.Error("Error With The Movie Id ",null))
+        }
 
-       detailsResponse.value =  moviesRepo.getDetails(movie_id)
     }
 
     suspend fun  upsertMovies(movies : Movie):Boolean {
@@ -88,7 +97,7 @@ fun searchMovie(keyword: String){
         roomMovies = MutableLiveData()
         val movies= moviesRepo.getAllData()
         if (movies!= null){
-            roomMovies?.postValue(movies)
+            roomMovies?.postValue(movies.value)
         }
     }
 

@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
     tools:context=".ui.MainActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -17,7 +16,7 @@
         android:background="@color/background_color"
         android:textAlignment="center"
         app:itemTextAppearanceActiveBoldEnabled="true"
-        app:labelVisibilityMode="labeled"
+        app:labelVisibilityMode="unlabeled"
         android:pointerIcon="text"
         app:itemTextColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,9 +52,9 @@
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/movie_nav_graph" />
+            app:navGraph="@navigation/nav_graph" />
 
     </FrameLayout>
 

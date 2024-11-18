@@ -55,5 +55,5 @@ interface MoviesApi {
     suspend fun getDetails(
         @Path("movie_id")
         movie_id:Int
-    ): DetailsResponse
+    ):Response<DetailsResponse>
 }

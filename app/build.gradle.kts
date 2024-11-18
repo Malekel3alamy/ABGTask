@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -21,6 +23,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
     }
 
     buildTypes {
@@ -56,19 +63,32 @@ dependencies {
     implementation(libs.androidx.paging.runtime.ktx)
 
     testImplementation(libs.junit)
+    testImplementation ("org.mockito:mockito-core:5.13.0")
+
+    testImplementation ("io.mockk:mockk-android:1.13.12")
+    testImplementation ("io.mockk:mockk-agent:1.13.12")
 
     testImplementation ("com.google.truth:truth:1.4.4")
     testImplementation ("androidx.arch.core:core-testing:2.2.0")
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
+    testImplementation(project(":app"))
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
 
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation ("com.google.truth:truth:1.4.4")
     androidTestImplementation ("androidx.arch.core:core-testing:2.2.0")
-    androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation ("androidx.test:runner:1.6.2")
     androidTestImplementation ("androidx.test:rules:1.6.1")
+    androidTestImplementation ("org.mockito:mockito-core:5.13.0")
+
+    androidTestImplementation ("io.mockk:mockk-android:1.13.12")
+    androidTestImplementation ("io.mockk:mockk-agent:1.13.12")
 
 
     // Room
@@ -77,20 +97,23 @@ dependencies {
     // Kotlin Extensions and Coroutines support for Room
     implementation ("androidx.room:room-ktx:2.6.1")
     // Coroutines
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
     // Coroutine Lifecycle Scopes
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.5")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.5")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
+
+    // Coroutines For test
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     // Retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.11.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.5.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.12.0")
     // Navigation Components
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.8.0")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.8.0")
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.8.1")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.8.1")
     // Glide
-    implementation ("com.github.bumptech.glide:glide:4.13.0")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
     ksp ("com.github.bumptech.glide:compiler:4.16.0")
 
     // Work Manager
@@ -98,7 +121,7 @@ dependencies {
 
     // Hilt
     implementation ("com.google.dagger:hilt-android:2.52")
-    kapt ("com.google.dagger:hilt-android-compiler:2.51.1")
+    kapt ("com.google.dagger:hilt-android-compiler:2.52")
 
     // Pagination
     implementation("com.github.paginationspring:pagination:1.0.3")
@@ -106,4 +129,9 @@ dependencies {
     // Splash Screen
     implementation("androidx.core:core-splashscreen:1.2.0-alpha02")
 
+
+
+//    implementation("com.example:library:1.0.0") {
+//        exclude(group = "com.another.library", module = "conflicting-library")
+//    }
 }
