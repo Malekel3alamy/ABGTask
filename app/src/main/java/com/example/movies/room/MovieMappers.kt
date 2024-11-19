@@ -19,6 +19,7 @@ fun Movie.toMovieEntity():MovieEntity{
         vote_count = vote_count,
         poster_path = poster_path,
         overview = overview,
+        category = ""
 
     )
 }

@@ -14,10 +14,10 @@ import androidx.paging.cachedIn
 import com.example.movies.api.models.Movie
 import com.example.movies.api.models.details.DetailsResponse
 import com.example.movies.paging.NowPlayingMoviesRemoteMediator
-import com.example.movies.paging.PopularMoviesPagingSource
+import com.example.movies.paging.PopularMoviesRemoteMediator
 import com.example.movies.paging.SearchMoviesPagingSource
-import com.example.movies.paging.TopRatedMoviesPagingSource
-import com.example.movies.paging.UpComingMoviesPagingSource
+import com.example.movies.paging.TopRatedMoviesRemoteMediator
+import com.example.movies.paging.UpComingMoviesRemoteMediator
 import com.example.movies.repo.MoviesRepoInrerface
 import com.example.movies.room.MovieEntity
 import com.example.movies.room.MoviesDatabase
@@ -32,43 +32,59 @@ class MoviesViewModel @Inject constructor( private val moviesRepo:  MoviesRepoIn
 
     var detailsResponse =  MutableLiveData<Resources<DetailsResponse>>()
 
-    var roomMovies : MutableLiveData<List<MovieEntity>>? = null
 
     var searchMovies :  Flow<PagingData<Movie>>? = null
 
 
-    val popularMovies = Pager(PagingConfig(5)){
-        PopularMoviesPagingSource(moviesRepo)
-    }.flow.cachedIn(viewModelScope)
-
     @OptIn(ExperimentalPagingApi::class)
-    val nowPlayingMovies = Pager(
-        PagingConfig(20),
+    val popularMovies =  Pager(
+        PagingConfig(
+            pageSize = 20,
+            enablePlaceholders = false),
         pagingSourceFactory = {
             moviesDatabase.getMoviesDao().pagingSource()
         },
-        remoteMediator = NowPlayingMoviesRemoteMediator(moviesRepo,moviesDatabase)).flow.cachedIn(viewModelScope)
+        remoteMediator = PopularMoviesRemoteMediator(moviesRepo,moviesDatabase)).flow
 
-    val topRatedMovies = Pager(PagingConfig(5)){
-        TopRatedMoviesPagingSource(moviesRepo)
-    }.flow.cachedIn(viewModelScope)
+    @OptIn(ExperimentalPagingApi::class)
+    val nowPlayingMovies = Pager(
+        PagingConfig(
+            pageSize = 20,
+            enablePlaceholders = false),
+        pagingSourceFactory = {
+            moviesDatabase.getMoviesDao().pagingSource()
+        },
+        remoteMediator = NowPlayingMoviesRemoteMediator(moviesRepo,moviesDatabase)).flow
 
-    val upcomingMovies = Pager(PagingConfig(5)){
-        UpComingMoviesPagingSource(moviesRepo)
-    }.flow.cachedIn(viewModelScope)
+    @OptIn(ExperimentalPagingApi::class)
+    val topRatedMovies =  Pager(
+        PagingConfig(pageSize = 20,
+            enablePlaceholders = false),
+        pagingSourceFactory = {
+            moviesDatabase.getMoviesDao().pagingSource()
+        },
+        remoteMediator = TopRatedMoviesRemoteMediator(moviesRepo,moviesDatabase)).flow
+
+    @OptIn(ExperimentalPagingApi::class)
+    val upcomingMovies =  Pager(
+        PagingConfig(pageSize = 20,
+            enablePlaceholders = false),
+        pagingSourceFactory = {
+            moviesDatabase.getMoviesDao().pagingSource()
+        },
+        remoteMediator = UpComingMoviesRemoteMediator(moviesRepo,moviesDatabase)).flow
 
 
 
 fun searchMovie(keyword: String){
      searchMovies = Pager(PagingConfig(1)){
         SearchMoviesPagingSource(keyword,moviesRepo)
-    }.flow.cachedIn(viewModelScope)
+    }.flow
 }
 
 
 
     // get Movie Details
-
     fun getMovieDetails(movie_id:Int) = viewModelScope.launch {
         if (movie_id > 0 && movie_id != null){
             detailsResponse.postValue(Resources.Loading())
@@ -78,26 +94,6 @@ fun searchMovie(keyword: String){
         }
 
     }
-
-  /*  suspend fun  upsertMovies(movies : List<MovieEntity>):Boolean {
-        var  result = false
-        viewModelScope.async {
-
-             moviesRepo.upsertAllMovies(movies)
-            result = true
-
-        }.await()
-        return result
-    }*/
-  /*  // Get All Movies
-    suspend fun getAllMoviesFromRoom() {
-        roomMovies = MutableLiveData()
-        val movies= moviesRepo.getAllData()
-        if (movies!= null){
-            roomMovies?.postValue(movies.value)
-        }
-    }*/
-
 
     fun internetConnection(context: Context) : Boolean {
         (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).apply{
@@ -116,33 +112,9 @@ fun searchMovie(keyword: String){
 
     }
 
-    // delete data inside database
-    fun deleteAll()=viewModelScope.launch {
-        moviesRepo.deleteAll()
-    }
 
 
 
-    fun  updateMoviesDataAndApi() = viewModelScope.launch {
-
-        deleteAll()
-       // upsertMovies(roomMovies?.value!!.toList() )
-
-    }
-
-//    suspend fun getMovie(id:Int) :Boolean {
-//        var movie :Movie?= null
-//        viewModelScope.async {
-//             movie = moviesRepo.getMovie(id)
-//
-//        }.await()
-//
-//        if (movie == null){
-//            return false
-//        }else{
-//            return true
-//        }
-//    }
 
 
 

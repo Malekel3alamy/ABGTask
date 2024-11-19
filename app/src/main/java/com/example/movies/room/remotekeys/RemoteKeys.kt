@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class RemoteKeys(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "movie_id")
-    val movieID: Int,
+    val movieID: String,
     val prevKey: Int?,
     val currentPage: Int,
     val nextKey: Int?,

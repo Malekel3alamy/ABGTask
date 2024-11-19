@@ -63,13 +63,13 @@ dependencies {
     implementation(libs.androidx.paging.runtime.ktx)
 
     testImplementation(libs.junit)
-    testImplementation ("org.mockito:mockito-core:5.13.0")
+    //testImplementation ("org.mockito:mockito-core:5.14.2")
 
-    testImplementation ("io.mockk:mockk-android:1.13.12")
-    testImplementation ("io.mockk:mockk-agent:1.13.12")
+    //testImplementation ("io.mockk:mockk-android:1.13.13")
+    //testImplementation ("io.mockk:mockk-agent:1.13.13")
 
-    testImplementation ("com.google.truth:truth:1.4.4")
-    testImplementation ("androidx.arch.core:core-testing:2.2.0")
+    //testImplementation ("com.google.truth:truth:1.4.4")
+    //testImplementation ("androidx.arch.core:core-testing:2.2.0")
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     testImplementation(project(":app"))
     testImplementation(libs.junit.junit)
@@ -79,16 +79,16 @@ dependencies {
 
 
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation ("com.google.truth:truth:1.4.4")
-    androidTestImplementation ("androidx.arch.core:core-testing:2.2.0")
-    androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
+   // androidTestImplementation ("com.google.truth:truth:1.4.4")
+    //androidTestImplementation ("androidx.arch.core:core-testing:2.2.0")
+   // androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation ("androidx.test:runner:1.6.2")
     androidTestImplementation ("androidx.test:rules:1.6.1")
-    androidTestImplementation ("org.mockito:mockito-core:5.13.0")
+    androidTestImplementation ("org.mockito:mockito-core:5.14.2")
 
-    androidTestImplementation ("io.mockk:mockk-android:1.13.12")
-    androidTestImplementation ("io.mockk:mockk-agent:1.13.12")
+   // androidTestImplementation ("io.mockk:mockk-android:1.13.13")
+    androidTestImplementation ("io.mockk:mockk-agent:1.13.13")
 
 
     // Room
@@ -97,13 +97,13 @@ dependencies {
     ksp ("androidx.room:room-compiler:2.6.1")
 
     // Kotlin Extensions and Coroutines support for Room
-    implementation ("androidx.room:room-ktx:2.6.1")
+    //implementation ("androidx.room:room-ktx:2.6.1")
     // Coroutines
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
     // Coroutine Lifecycle Scopes
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
 
     // Coroutines For test
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
@@ -112,14 +112,14 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.12.0")
     // Navigation Components
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.8.1")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.8.1")
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.8.4")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.8.4")
     // Glide
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     ksp ("com.github.bumptech.glide:compiler:4.16.0")
 
     // Work Manager
-    implementation("androidx.work:work-runtime-ktx:2.9.1")
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
 
     // Hilt
     implementation ("com.google.dagger:hilt-android:2.52")
@@ -132,8 +132,8 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.2.0-alpha02")
 
     // Paging 3
-    implementation("androidx.paging:paging-common:3.3.4")
-    implementation("androidx.paging:paging-runtime:3.3.4")
+    //implementation("androidx.paging:paging-common:3.3.4")
+   // implementation("androidx.paging:paging-runtime:3.3.4")
 
 //    implementation("com.example:library:1.0.0") {
 //        exclude(group = "com.another.library", module = "conflicting-library")
