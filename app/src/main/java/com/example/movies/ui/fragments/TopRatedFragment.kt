@@ -1,6 +1,7 @@
 package com.example.movies.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -13,8 +14,11 @@ import com.example.movies.databinding.FragmentTopRatedBinding
 import com.example.movies.ui.MainActivity
 import com.example.movies.ui.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class TopRatedFragment : Fragment(R.layout.fragment_top_rated) {
@@ -23,7 +27,11 @@ class TopRatedFragment : Fragment(R.layout.fragment_top_rated) {
     private lateinit var moviesAdapter : MovieRecyclerAdapter
 
 
+    override fun onStart() {
+        super.onStart()
 
+        showProgressBar()
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,14 +46,17 @@ class TopRatedFragment : Fragment(R.layout.fragment_top_rated) {
                 if (movie.id != null)
                     putParcelable("movie", movie)
             }
-            findNavController().navigate(R.id.action_topRatedFragment_to_moviesFragment,bundle)
+            findNavController().navigate(R.id.action_homeFragment_to_moviesFragment,bundle)
         }
 
 
 
        lifecycleScope.launch {
            moviesViewModel.topRatedMovies.collectLatest { topRatedMovies ->
-
+               delay(2000L)
+               withContext(Dispatchers.Main){
+                   hideProgressBar()
+               }
                moviesAdapter.submitData(topRatedMovies)
            }
        }

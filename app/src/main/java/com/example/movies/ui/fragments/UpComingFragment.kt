@@ -1,6 +1,7 @@
 package com.example.movies.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -13,8 +14,11 @@ import com.example.movies.databinding.FragmentUpComingBinding
 import com.example.movies.ui.MainActivity
 import com.example.movies.ui.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class UpComingFragment : Fragment(R.layout.fragment_up_coming) {
@@ -22,7 +26,11 @@ class UpComingFragment : Fragment(R.layout.fragment_up_coming) {
     lateinit var binding: FragmentUpComingBinding
     lateinit var moviesAdapter : MovieRecyclerAdapter
 
+    override fun onStart() {
+        super.onStart()
 
+        showProgressBar()
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,25 +39,24 @@ class UpComingFragment : Fragment(R.layout.fragment_up_coming) {
         (activity as MainActivity).showToolbarAndNavigationView()
         setUpRecycler()
 
-
-
-
-
-
        moviesAdapter.onMovieClick={ movie ->
 
            val bundle = Bundle().apply {
                if (movie.id != null)
                    putParcelable("movie", movie)
            }
-           findNavController().navigate(R.id.action_upComingFragment_to_moviesFragment,bundle)
+           findNavController().navigate(R.id.action_homeFragment_to_moviesFragment,bundle)
        }
 
 
         lifecycleScope.launch {
-            moviesViewModel.upcomingMovies.collectLatest { topRatedMovies ->
+            moviesViewModel.upcomingMovies.collectLatest { upcomingMovies ->
+                delay(2000L)
+                withContext(Dispatchers.Main){
 
-                moviesAdapter.submitData(topRatedMovies)
+                    hideProgressBar()
+                }
+                moviesAdapter.submitData(upcomingMovies)
             }
         }
 

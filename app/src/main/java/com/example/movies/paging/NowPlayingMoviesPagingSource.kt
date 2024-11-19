@@ -1,57 +1,65 @@
 package com.example.movies.paging
 
 import android.util.Log
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadType
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import androidx.paging.RemoteMediator
+import androidx.room.withTransaction
 import com.example.movies.models.Movie
 import com.example.movies.repo.MoviesRepo
 import com.example.movies.repo.MoviesRepoInrerface
+import com.example.movies.room.MoviesDatabase
 import com.example.movies.utils.Resources
 import kotlinx.coroutines.delay
 import okio.IOException
 import retrofit2.HttpException
 
 
-class NowPlayingMoviesPagingSource(private val moviesRepo : MoviesRepoInrerface) : PagingSource<Int,Movie>() {
-    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
-            return null
-    }
-
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
-
+@OptIn(ExperimentalPagingApi::class)
+class NowPlayingMoviesPagingSource(private val moviesRepo : MoviesRepoInrerface,private val moviesDatabase: MoviesDatabase) :
+    RemoteMediator<Int, Movie>() {
+    override suspend fun load(loadType: LoadType, state: PagingState<Int, Movie>): MediatorResult {
         return try {
-            val currentPage = params.key ?: 1
-            val response = moviesRepo.getNowPlayingMovies(currentPage)
-            var data = mutableListOf<Movie>()
-            when(response){
-                is Resources.Error -> {
-                    Log.d("PagingError","${response.message}  ")
-                }
-                is Resources.Loading -> {
-                    Log.d("PagingError"," Loading")
-                }
-                is Resources.Success -> {
-                    Log.d("PagingError"," Succeeded ")
-                     data  = response.data!!.results
+            val loadKey = when(loadType){
 
+                LoadType.PREPEND -> {
+                    return MediatorResult.Success(
+                        endOfPaginationReached = true
+                    )
                 }
+                LoadType.APPEND -> {
+                   val lastItem = state.lastItemOrNull()
+                    if (lastItem == null){
+                        1
+                    }else{
+                        (lastItem.id!!.div(state.config.pageSize)).plus(1)
+                    }
+                }
+
+                LoadType.REFRESH ->1
             }
-            // delay(2000L)
-            val responseData = mutableListOf<Movie>()
-            responseData.addAll(data)
-            LoadResult.Page(
-                data = responseData,
-                prevKey = if (currentPage == 1) null else -1,
-                nextKey = currentPage.plus(1)
-            )
+          val nowPlayingMovies=   moviesRepo.getNowPlayingMovies(pageNumber = loadKey)
+
+            moviesDatabase.withTransaction {
+                if (loadType == LoadType.REFRESH){
+                    moviesDatabase.getMoviesDao().deleteAllMovies()
+                }
+                nowPlayingMovies.data?.let {
+                    moviesDatabase.getMoviesDao().upsertAllMovies(it.results)
+                }
+
+
+            }
+
+            MediatorResult.Success(endOfPaginationReached = nowPlayingMovies.data?.page == null)
         }catch (e:IOException){
-            Log.d("PagingError",e.toString())
-            LoadResult.Error(e)
-        }
-        catch (httpE : HttpException){
-            Log.d("PagingError",httpE.toString())
-            LoadResult.Error(httpE)
+            MediatorResult.Error(e)
+        }catch (httpError:HttpException){
+            MediatorResult.Error(httpError)
         }
     }
+
 
 }

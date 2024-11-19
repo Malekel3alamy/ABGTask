@@ -14,8 +14,11 @@ import com.example.movies.databinding.FragmentPopularBinding
 import com.example.movies.ui.MainActivity
 import com.example.movies.ui.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class PopularFragment : Fragment(R.layout.fragment_popular) {
@@ -23,7 +26,11 @@ class PopularFragment : Fragment(R.layout.fragment_popular) {
     lateinit var binding: FragmentPopularBinding
     lateinit var moviesAdapter : MovieRecyclerAdapter
 
+    override fun onStart() {
+        super.onStart()
 
+        showProgressBar()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,15 +44,19 @@ class PopularFragment : Fragment(R.layout.fragment_popular) {
                 if (movie.id != null)
                     putParcelable("movie", movie)
             }
-            findNavController().navigate(R.id.action_popularFragment_to_moviesFragment, bundle)
+            findNavController().navigate(R.id.action_homeFragment_to_moviesFragment, bundle)
         }
 
 
         lifecycleScope.launch {
-            moviesViewModel.popularMovies.collectLatest{nowPlayingMovies ->
-                Log.d("NowPlayMovie",nowPlayingMovies.toString())
-                moviesAdapter .submitData(nowPlayingMovies)
-                hideProgressBar()
+            moviesViewModel.popularMovies.collectLatest{popularMovies ->
+                delay(2000L)
+                withContext(Dispatchers.Main){
+                    Log.d("INSIDE_COROUTINE","INSIDE")
+                    hideProgressBar()
+                }
+                moviesAdapter .submitData(popularMovies)
+
             }
         }
 

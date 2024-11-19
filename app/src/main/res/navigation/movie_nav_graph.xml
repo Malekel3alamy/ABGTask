@@ -3,28 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/movie_nav_graph"
-    app:startDestination="@id/nowPlayingFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/moviesFragment"
-        android:name="com.example.movies.ui.fragments.MoviesFragment"
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.example.movies.ui.fragments.MovieDetailsFragment"
         android:label="fragment_movies"
-        tools:layout="@layout/fragment_movies" >
+        tools:layout="@layout/fragment_movie_details" >
         <action
-            android:id="@+id/action_moviesFragment_to_nowPlayingFragment"
-            app:destination="@id/nowPlayingFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/nowPlayingFragment"
-        android:name="com.example.movies.ui.fragments.NowPlayingFragment"
-        android:label="fragment_now_playing"
-        tools:layout="@layout/fragment_now_playing" >
-        <argument
-            android:name="nowPlayingArgument"
-            android:defaultValue="false"/>
-        <action
-            android:id="@+id/action_nowPlayingFragment_to_moviesFragment"
-            app:destination="@id/moviesFragment" />
+            android:id="@+id/action_moviesFragment_to_HomeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 
     <fragment
@@ -34,44 +22,18 @@
         android:label="fragment_search" >
         <action
             android:id="@+id/action_searchFragment_to_moviesFragment"
-            app:destination="@id/moviesFragment" />
+            app:destination="@id/movieDetailsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/topRatedFragment2"
-        android:name="com.example.movies.ui.fragments.TopRatedFragment"
-        android:label="TopRatedFragment"
-        tools:layout="@layout/fragment_top_rated"
-        >
-        <action
-            android:id="@+id/action_topRatedFragment_to_moviesFragment"
-            app:destination="@id/moviesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/upComingFragment2"
-        android:name="com.example.movies.ui.fragments.UpComingFragment"
-        android:label="fragment_up_coming"
-        tools:layout="@layout/fragment_up_coming" >
-        <action
-            android:id="@+id/action_upComingFragment_to_moviesFragment"
-            app:destination="@id/moviesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/HomeFragment"
+        android:id="@+id/homeFragment"
         android:name="com.example.movies.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_HomeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/popularFragment2"
-        android:name="com.example.movies.ui.fragments.PopularFragment"
-        android:label="PopularFragment"
-        tools:layout="@layout/fragment_popular"
-        >
         <action
-            android:id="@+id/action_popularFragment_to_moviesFragment"
-            app:destination="@id/moviesFragment" />
+            android:id="@+id/action_homeFragment_to_moviesFragment"
+            app:destination="@id/movieDetailsFragment" />
     </fragment>
 </navigation>

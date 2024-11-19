@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/HomeFragment">
+    app:startDestination="@id/homeFragment">
     <fragment
-        android:id="@+id/HomeFragment"
+        android:id="@+id/homeFragment"
         android:name="com.example.movies.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home" >

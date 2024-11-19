@@ -10,7 +10,6 @@ import com.androiddevs.shoppinglisttestingyt.getOrAwaitValue
 import com.example.movies.models.Movie
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -47,7 +46,7 @@ class MoviesDaoTest {
         val movie = Movie(null,null,null,1,null,
             null,null,null,null,null,null,null,null,null)
 
-        dao.upsert(movie)
+        dao.upsertAllMovies(movie)
 
         val result = dao.getMovie(1)
         assertThat(result).isEqualTo(movie)
@@ -58,7 +57,7 @@ class MoviesDaoTest {
     fun getMovieByIdTest() = runBlocking{
         val movie = Movie(null,null,null,1,null,
             null,null,null,null,null,null,null,null,null)
-        dao.upsert(movie)
+        dao.upsertAllMovies(movie)
 
         val resultMovie = dao.getMovie(1)
         Log.d("MovieResult",resultMovie.toString())
@@ -71,7 +70,7 @@ class MoviesDaoTest {
     fun deleteMovieTest() = runBlocking {
         val movie = Movie(null,null,null,1,null,
             null,null,null,null,null,null,null,null,null)
-        dao.upsert(movie)
+        dao.upsertAllMovies(movie)
       dao.deleteMovie(movie)
         val resultMovie = dao.getMovie(1)
         assertThat(resultMovie).isNull()
@@ -81,7 +80,7 @@ class MoviesDaoTest {
     fun deleteAllMoviesTest() = runBlocking {
         val movie = Movie(null,null,null,1,null,
             null,null,null,null,null,null,null,null,null)
-        dao.upsert(movie)
+        dao.upsertAllMovies(movie)
         dao.deleteAllMovies()
         val resultMovies = dao.getAllMovies()
         assertThat(resultMovies.getOrAwaitValue()).isEmpty()
@@ -91,7 +90,7 @@ class MoviesDaoTest {
     fun getAllMoviesTest() = runBlocking {
         val movie = Movie(null,null,null,1,null,
             null,null,null,null,null,null,null,null,null)
-        dao.upsert(movie)
+        dao.upsertAllMovies(movie)
 
         val resultMovie = dao.getMovie(1)
         val resultMovies = dao.getAllMovies()

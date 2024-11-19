@@ -35,7 +35,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class MoviesViewModel @Inject constructor( private val moviesRepo:  MoviesRepoInrerface) : ViewModel() {
+class MoviesViewModel @Inject constructor( private val moviesRepo:  MoviesRepoInrerface,private val moviesDatabase: MoviesDatabase) : ViewModel() {
 
     var detailsResponse =  MutableLiveData<Resources<DetailsResponse>>()
 
@@ -49,7 +49,7 @@ class MoviesViewModel @Inject constructor( private val moviesRepo:  MoviesRepoIn
     }.flow.cachedIn(viewModelScope)
 
     val nowPlayingMovies = Pager(PagingConfig(5)){
-        NowPlayingMoviesPagingSource(moviesRepo)
+        moviesDatabase.getMoviesDao().pagingSource()
     }.flow.cachedIn(viewModelScope)
 
     val topRatedMovies = Pager(PagingConfig(5)){

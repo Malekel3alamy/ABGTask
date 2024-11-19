@@ -4,7 +4,7 @@
 
     <item android:title="Movies"
         android:icon="@drawable/ticket_1"
-        android:id="@+id/HomeFragment"
+        android:id="@+id/homeFragment"
         />
     <item android:title="Search"
         android:icon="@drawable/search_outlined"

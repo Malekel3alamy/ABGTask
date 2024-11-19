@@ -7,7 +7,7 @@
     android:background="@color/background_color"
     android:layout_height="match_parent"
     android:id="@+id/movieFragment"
-    tools:context=".ui.fragments.MoviesFragment"
+    tools:context=".ui.fragments.MovieDetailsFragment"
     >
     <ImageView
         android:id="@+id/backButton"

@@ -40,7 +40,6 @@ class MovieRecyclerAdapter : PagingDataAdapter<Movie, com.example.movies.adapter
 if (movie != null){
     holder.title.text = movie.title
     Log.d("MovieName",movie.title.toString())
-   // holder.date.text = movie.release_date
     val average = movie.vote_average?.toFloat()
     holder.tvRating.text = String.format("%1.1f",average)
     Glide.with(holder.itemView).load("https://image.tmdb.org/t/p/w500/${movie.poster_path}").into(holder.movieImage)

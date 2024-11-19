@@ -8,16 +8,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movies.R
 import com.example.movies.adapter.MovieRecyclerAdapter
-import com.example.movies.adapter.NowPlayingMoviesAdapter
-import com.example.movies.adapter.TopRatedMoviesAdapter
-import com.example.movies.adapter.UpComingMoviesAdapter
 import com.example.movies.databinding.FragmentNowPlayingBinding
 import com.example.movies.ui.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,17 +26,23 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing) {
     private lateinit var nowPlayingMoviesAdapter : MovieRecyclerAdapter
     lateinit var ite_view_error : View
 
+    override fun onStart() {
+        super.onStart()
+
+        showProgressBar()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentNowPlayingBinding.bind(view)
 
-        showProgressBar()
+
         setUpRecycler()
         handleClickOnNowPlayingAdapter()
 
 
         checkInternetThenObserveMovies()
 
+        // handle internet error
         ite_view_error = view.findViewById<View>(R.id.itemMoviesError)
         binding.itemMoviesError.retryButton.setOnClickListener {
 
@@ -65,30 +68,42 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing) {
                 if (movie.id != null)
                     putParcelable("movie",movie)
             }
-            findNavController().navigate(R.id.action_nowPlayingFragment_to_moviesFragment,bundle)
+            findNavController().navigate(R.id.action_homeFragment_to_moviesFragment,bundle)
         }
     }
 
 private fun checkInternetThenObserveMovies(){
-    if (moviesViewModel.internetConnection(requireContext())){
 
+    if (moviesViewModel.internetConnection(requireContext())){
         lifecycleScope.launch(Dispatchers.IO) {
 
             moviesViewModel.nowPlayingMovies.collectLatest{nowPlayingMovies ->
+               delay(2000L)
+                withContext(Dispatchers.Main){
+
+                    hideProgressBar()
+                }
                 nowPlayingMoviesAdapter.submitData(nowPlayingMovies)
 
-               withContext(Dispatchers.Main){
-                   hideProgressBar()
-               }
             }
         }
 
 
     }else{
-        lifecycleScope.launch(Dispatchers.Main) {
-            ite_view_error.visibility = View.VISIBLE
+
+        lifecycleScope.launch {
+            moviesViewModel.getAllMoviesFromRoom()
 
         }
+
+
+//        lifecycleScope.launch(Dispatchers.Main) {
+//
+//            hideProgressBar()
+//            ite_view_error.visibility = View.VISIBLE
+//            showErrorMessage("Connect To Internet ")
+//
+//        }
 
     }
 }
@@ -102,7 +117,7 @@ private fun checkInternetThenObserveMovies(){
     var isError = false
 
     private fun hideProgressBar(){
-        binding.paginationProgressBar.visibility = View.GONE
+        binding.paginationProgressBar.visibility = View.INVISIBLE
 
     }
 
