@@ -1,12 +1,11 @@
 package com.example.movies.repo
 
 import androidx.lifecycle.LiveData
-import com.example.movies.api.RetrofitInstance
-import com.example.movies.models.Movie
-import com.example.movies.models.MovieResponse
-import com.example.movies.models.details.DetailsResponse
+import com.example.movies.api.models.Movie
+import com.example.movies.api.models.MovieResponse
+import com.example.movies.api.models.details.DetailsResponse
+import com.example.movies.room.MovieEntity
 import com.example.movies.utils.Resources
-import retrofit2.Response
 
 interface MoviesRepoInrerface {
 
@@ -24,7 +23,7 @@ interface MoviesRepoInrerface {
     suspend fun  getDetails(movie_id:Int): Resources<DetailsResponse>
 
     // Insert Data To Room
-    suspend fun  upsert(movies:Movie)
+    suspend fun  upsertAllMovies(movies:List<Movie>)
 
     // Delete All Room Database
     suspend fun deleteAll()
@@ -32,11 +31,7 @@ interface MoviesRepoInrerface {
     // Get All Data From Room
     suspend   fun getAllData(): LiveData<List<Movie>>
 
-    // Delete One Movie
 
-    suspend fun deleteMovie(movies:Movie)
-
-    suspend fun getMovie(id:Int) :Movie
 
 
 

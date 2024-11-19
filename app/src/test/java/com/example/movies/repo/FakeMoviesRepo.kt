@@ -3,28 +3,12 @@ package com.example.movies.repo
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.example.movies.api.MoviesApi
-import com.example.movies.models.Dates
-import com.example.movies.models.Movie
-import com.example.movies.models.MovieResponse
-import com.example.movies.models.details.DetailsResponse
-import com.example.movies.paging.NowPlayingMoviesPagingSource
-import com.example.movies.paging.TopRatedMoviesPagingSource
-import com.example.movies.paging.UpComingMoviesPagingSource
-import com.example.movies.room.MoviesDatabase
+import com.example.movies.api.models.Dates
+import com.example.movies.api.models.Movie
+import com.example.movies.api.models.MovieResponse
+import com.example.movies.api.models.details.DetailsResponse
 import com.example.movies.utils.Resources
-import jakarta.inject.Inject
-import kotlinx.coroutines.flow.Flow
-import org.junit.Before
 import org.junit.Rule
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
-import retrofit2.Response
 
 
 class FakeMoviesRepo:MoviesRepoInrerface {
@@ -98,9 +82,11 @@ class FakeMoviesRepo:MoviesRepoInrerface {
 
 
     override suspend fun getDetails(movie_id: Int): Resources<DetailsResponse> {
-       return Resources.Success(DetailsResponse(true,"","",1, emptyList(),"",1,
+       return Resources.Success(
+           DetailsResponse(true,"","",1, emptyList(),"",1,
            "", emptyList(),"","","",20.2,"", emptyList(), emptyList(),"",1,
-           1, emptyList(),"","","",false,20.2,1 ))
+           1, emptyList(),"","","",false,20.2,1 )
+       )
 
     }
 

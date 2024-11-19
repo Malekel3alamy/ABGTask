@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.movies.repo.MoviesRepo
 import com.example.movies.repo.MoviesRepoInrerface
 import com.example.movies.room.MoviesDatabase
+import com.example.movies.room.remotekeys.RemoteKeysDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,4 +33,8 @@ object RoomDatabaseModule {
     fun provideMoviesRepoInterface (db:MoviesDatabase) : MoviesRepoInrerface{
         return MoviesRepo(db)
     }
+
+    @Singleton
+    @Provides
+    fun provideRemoteKeysDao(moviesDatabase: MoviesDatabase): RemoteKeysDao = moviesDatabase.getRemoteKeysDao()
 }

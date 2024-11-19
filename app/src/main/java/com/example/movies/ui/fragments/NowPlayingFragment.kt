@@ -1,9 +1,9 @@
 package com.example.movies.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -40,13 +40,13 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing) {
         handleClickOnNowPlayingAdapter()
 
 
-        checkInternetThenObserveMovies()
+        ObserveMovies()
 
         // handle internet error
         ite_view_error = view.findViewById<View>(R.id.itemMoviesError)
         binding.itemMoviesError.retryButton.setOnClickListener {
 
-            checkInternetThenObserveMovies()
+            ObserveMovies()
             ite_view_error.visibility = View.GONE
         }
 
@@ -63,49 +63,34 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing) {
 
     private fun handleClickOnNowPlayingAdapter(){
         nowPlayingMoviesAdapter.onMovieClick= { movie ->
+     if (moviesViewModel.internetConnection(requireContext())){
+         val bundle = Bundle().apply {
+             if (movie.id != null)
+                 putParcelable("movie",movie)
+         }
+         findNavController().navigate(R.id.action_homeFragment_to_moviesFragment,bundle)
+     }else{
+         Toast.makeText(requireContext(),"Please Connect To Internet",Toast.LENGTH_SHORT).show()
+     }
 
-            val bundle = Bundle().apply {
-                if (movie.id != null)
-                    putParcelable("movie",movie)
-            }
-            findNavController().navigate(R.id.action_homeFragment_to_moviesFragment,bundle)
         }
     }
 
-private fun checkInternetThenObserveMovies(){
+private fun ObserveMovies(){
 
-    if (moviesViewModel.internetConnection(requireContext())){
-        lifecycleScope.launch(Dispatchers.IO) {
+    lifecycleScope.launch(Dispatchers.IO) {
 
-            moviesViewModel.nowPlayingMovies.collectLatest{nowPlayingMovies ->
-               delay(2000L)
-                withContext(Dispatchers.Main){
+        moviesViewModel.nowPlayingMovies.collectLatest{nowPlayingMovies ->
+            delay(2000L)
+            withContext(Dispatchers.Main){
 
-                    hideProgressBar()
-                }
-                nowPlayingMoviesAdapter.submitData(nowPlayingMovies)
-
+                hideProgressBar()
             }
-        }
-
-
-    }else{
-
-        lifecycleScope.launch {
-            moviesViewModel.getAllMoviesFromRoom()
+            nowPlayingMoviesAdapter.submitData(nowPlayingMovies)
 
         }
-
-
-//        lifecycleScope.launch(Dispatchers.Main) {
-//
-//            hideProgressBar()
-//            ite_view_error.visibility = View.VISIBLE
-//            showErrorMessage("Connect To Internet ")
-//
-//        }
-
     }
+
 }
 
 

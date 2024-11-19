@@ -1,23 +1,23 @@
 package com.example.movies.room
 
 import android.content.Context
-import android.database.Cursor
 import androidx.room.Database
-import androidx.room.DeleteTable
-import androidx.room.Entity
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.movies.models.Movie
+import com.example.movies.api.models.Movie
+import com.example.movies.room.remotekeys.RemoteKeys
+import com.example.movies.room.remotekeys.RemoteKeysDao
 
 @Database(
-    entities = [Movie::class],
+    entities = [Movie::class,RemoteKeys::class],
     version = 1
 )
 @TypeConverters(Converters::class)
  abstract class MoviesDatabase : RoomDatabase() {
 
      abstract fun getMoviesDao() : MoviesDao
+    abstract fun getRemoteKeysDao(): RemoteKeysDao
 
 
      companion object{

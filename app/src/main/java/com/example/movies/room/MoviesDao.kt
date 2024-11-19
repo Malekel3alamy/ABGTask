@@ -3,11 +3,10 @@ package com.example.movies.room
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.movies.models.Movie
+import com.example.movies.api.models.Movie
 
 
 @Dao
@@ -29,7 +28,7 @@ interface MoviesDao {
 //    suspend fun deleteMovie(movie: Movie)
 
     @Query(" SELECT * FROM  movies")
-    fun pagingSource() : PagingSource<Int,Movie>
+    fun pagingSource() : PagingSource<Int, Movie>
 
 
 

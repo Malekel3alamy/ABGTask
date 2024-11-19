@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.movies.R
-import com.example.movies.models.Movie
+import com.example.movies.api.models.Movie
 
 class MovieRecyclerAdapter : PagingDataAdapter<Movie, com.example.movies.adapter.MovieRecyclerAdapter.MyViewHolder>(
     differCallback ) {

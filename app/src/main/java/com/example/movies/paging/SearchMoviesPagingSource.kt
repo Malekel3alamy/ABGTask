@@ -2,12 +2,11 @@ package com.example.movies.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.movies.models.Movie
-import com.example.movies.repo.MoviesRepo
+import com.example.movies.api.models.Movie
 import com.example.movies.repo.MoviesRepoInrerface
 import retrofit2.HttpException
 
-class SearchMoviesPagingSource(private val keyWord : String , private val moviesRepo: MoviesRepoInrerface) : PagingSource<Int,Movie>() {
+class SearchMoviesPagingSource(private val keyWord : String , private val moviesRepo: MoviesRepoInrerface) : PagingSource<Int, Movie>() {
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
 return null    }
 

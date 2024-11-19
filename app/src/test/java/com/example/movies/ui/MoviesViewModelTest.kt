@@ -1,34 +1,20 @@
 package com.example.movies.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
-import androidx.paging.PagingData
-import androidx.paging.PagingSource
-import com.example.movies.models.Dates
-import com.example.movies.models.Movie
-import com.example.movies.models.MovieResponse
-import com.example.movies.models.details.DetailsResponse
-import com.example.movies.paging.NowPlayingMoviesPagingSource
-import com.example.movies.repo.FakeMoviesRepo
+import com.example.movies.api.models.Movie
 import com.example.movies.repo.MoviesRepo
-import com.example.movies.repo.MoviesRepoInrerface
 import com.example.movies.utility.MainDispatcherRule
-import com.example.movies.utility.ResourcesTest
 import com.example.movies.utils.Resources
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import retrofit2.Response
-import java.util.concurrent.Flow
 
 
 class MoviesViewModelTest {

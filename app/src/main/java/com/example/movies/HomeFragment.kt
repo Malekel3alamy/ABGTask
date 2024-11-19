@@ -28,7 +28,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         // directing user to search screen
         binding.homeFragmentSearchIcon.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_searchFragment2)
+            findNavController().navigate(R.id.action_HomeFragment_to_searchFragment)
         }
         val moviesCategoriesFragments = arrayListOf(
             NowPlayingFragment(),

@@ -1,8 +1,8 @@
 package com.example.movies.room
 
 import androidx.room.TypeConverter
-import com.example.movies.models.Dates
-import com.example.movies.models.Movie
+import com.example.movies.api.models.Dates
+import com.example.movies.api.models.Movie
 import com.google.gson.Gson
 
 class Converters {
@@ -13,7 +13,7 @@ class Converters {
     }
 
     @TypeConverter
-    fun toDate(maximum: String) : Dates{
+    fun toDate(maximum: String) : Dates {
         return Dates(maximum,maximum)
     }
     @TypeConverter

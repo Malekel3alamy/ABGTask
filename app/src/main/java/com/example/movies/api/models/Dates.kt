@@ -1,4 +1,4 @@
-package com.example.movies.models
+package com.example.movies.api.models
 
 data class Dates(
     val maximum: String,

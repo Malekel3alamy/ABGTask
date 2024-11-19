@@ -93,7 +93,9 @@ dependencies {
 
     // Room
     implementation ("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-paging:2.7.0-alpha11")
     ksp ("androidx.room:room-compiler:2.6.1")
+
     // Kotlin Extensions and Coroutines support for Room
     implementation ("androidx.room:room-ktx:2.6.1")
     // Coroutines
@@ -124,12 +126,14 @@ dependencies {
     kapt ("com.google.dagger:hilt-android-compiler:2.52")
 
     // Pagination
-    implementation("com.github.paginationspring:pagination:1.0.3")
+   // implementation("com.github.paginationspring:pagination:1.0.3")
 
     // Splash Screen
     implementation("androidx.core:core-splashscreen:1.2.0-alpha02")
 
-
+    // Paging 3
+    implementation("androidx.paging:paging-common:3.3.4")
+    implementation("androidx.paging:paging-runtime:3.3.4")
 
 //    implementation("com.example:library:1.0.0") {
 //        exclude(group = "com.another.library", module = "conflicting-library")

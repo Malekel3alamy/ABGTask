@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.movies.R
 import com.example.movies.databinding.FragmentMovieDetailsBinding
-import com.example.movies.models.Movie
+import com.example.movies.api.models.Movie
 import com.example.movies.ui.MainActivity
 import com.example.movies.ui.MoviesViewModel
 import com.example.movies.utils.Resources
@@ -24,7 +24,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
      val moviesViewModel: MoviesViewModel by viewModels()
     lateinit var binding : FragmentMovieDetailsBinding
 
-    var movie :Movie? = null
+    var movie : Movie? = null
 
 
 

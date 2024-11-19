@@ -2,9 +2,10 @@ package com.example.movies.repo
 
 import androidx.lifecycle.LiveData
 import com.example.movies.api.RetrofitInstance
-import com.example.movies.models.Movie
-import com.example.movies.models.MovieResponse
-import com.example.movies.models.details.DetailsResponse
+import com.example.movies.api.models.Movie
+import com.example.movies.api.models.MovieResponse
+import com.example.movies.api.models.details.DetailsResponse
+import com.example.movies.room.MovieEntity
 import com.example.movies.room.MoviesDatabase
 import com.example.movies.utils.Resources
 import javax.inject.Inject
@@ -122,7 +123,7 @@ return try{
 
 
    // Insert Data To Room
-    override suspend fun  upsert(movies:Movie)  = db.getMoviesDao().upsertAllMovies(movies)
+    override suspend fun  upsertAllMovies(movies:List<Movie>)  = db.getMoviesDao().upsertAllMovies(movies)
 
    // Delete All Room Database
     override suspend fun deleteAll() = db.getMoviesDao().deleteAllMovies()
@@ -130,10 +131,5 @@ return try{
    // Get All Data From Room
      override suspend   fun getAllData(): LiveData<List<Movie>> = db.getMoviesDao().getAllMovies()
 
-   // Delete One Movie
-
-    override suspend fun deleteMovie(movies:Movie) = db.getMoviesDao().deleteMovie(movies)
-
-    override  suspend fun getMovie(id:Int) :Movie = db.getMoviesDao().getMovie(id)
 
 }

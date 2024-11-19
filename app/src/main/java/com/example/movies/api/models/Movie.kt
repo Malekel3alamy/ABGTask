@@ -1,4 +1,4 @@
-package com.example.movies.models
+package com.example.movies.api.models
 
 import android.os.Parcelable
 import androidx.room.Entity

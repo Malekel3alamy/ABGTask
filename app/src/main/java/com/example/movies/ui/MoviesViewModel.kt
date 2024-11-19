@@ -1,37 +1,30 @@
 package com.example.movies.ui
 
 import android.content.Context
-import android.database.Cursor
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.room.Query
-import com.example.movies.models.Movie
-import com.example.movies.models.MovieResponse
-import com.example.movies.models.details.DetailsResponse
-import com.example.movies.paging.NowPlayingMoviesPagingSource
+import com.example.movies.api.models.Movie
+import com.example.movies.api.models.details.DetailsResponse
+import com.example.movies.paging.NowPlayingMoviesRemoteMediator
 import com.example.movies.paging.PopularMoviesPagingSource
 import com.example.movies.paging.SearchMoviesPagingSource
 import com.example.movies.paging.TopRatedMoviesPagingSource
 import com.example.movies.paging.UpComingMoviesPagingSource
-import com.example.movies.repo.MoviesRepo
 import com.example.movies.repo.MoviesRepoInrerface
+import com.example.movies.room.MovieEntity
 import com.example.movies.room.MoviesDatabase
 import com.example.movies.utils.Resources
-import com.example.movies.utils.app
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,7 +32,7 @@ class MoviesViewModel @Inject constructor( private val moviesRepo:  MoviesRepoIn
 
     var detailsResponse =  MutableLiveData<Resources<DetailsResponse>>()
 
-    var roomMovies : MutableLiveData<List<Movie>>? = null
+    var roomMovies : MutableLiveData<List<MovieEntity>>? = null
 
     var searchMovies :  Flow<PagingData<Movie>>? = null
 
@@ -48,9 +41,13 @@ class MoviesViewModel @Inject constructor( private val moviesRepo:  MoviesRepoIn
         PopularMoviesPagingSource(moviesRepo)
     }.flow.cachedIn(viewModelScope)
 
-    val nowPlayingMovies = Pager(PagingConfig(5)){
-        moviesDatabase.getMoviesDao().pagingSource()
-    }.flow.cachedIn(viewModelScope)
+    @OptIn(ExperimentalPagingApi::class)
+    val nowPlayingMovies = Pager(
+        PagingConfig(20),
+        pagingSourceFactory = {
+            moviesDatabase.getMoviesDao().pagingSource()
+        },
+        remoteMediator = NowPlayingMoviesRemoteMediator(moviesRepo,moviesDatabase)).flow.cachedIn(viewModelScope)
 
     val topRatedMovies = Pager(PagingConfig(5)){
         TopRatedMoviesPagingSource(moviesRepo)
@@ -82,24 +79,24 @@ fun searchMovie(keyword: String){
 
     }
 
-    suspend fun  upsertMovies(movies : Movie):Boolean {
+  /*  suspend fun  upsertMovies(movies : List<MovieEntity>):Boolean {
         var  result = false
         viewModelScope.async {
 
-             moviesRepo.upsert(movies)
+             moviesRepo.upsertAllMovies(movies)
             result = true
 
         }.await()
         return result
-    }
-    // Get All Movies
+    }*/
+  /*  // Get All Movies
     suspend fun getAllMoviesFromRoom() {
         roomMovies = MutableLiveData()
         val movies= moviesRepo.getAllData()
         if (movies!= null){
             roomMovies?.postValue(movies.value)
         }
-    }
+    }*/
 
 
     fun internetConnection(context: Context) : Boolean {
@@ -119,24 +116,12 @@ fun searchMovie(keyword: String){
 
     }
 
-
-
-
-
-
-
-
-
-
-
     // delete data inside database
     fun deleteAll()=viewModelScope.launch {
         moviesRepo.deleteAll()
     }
 
-    fun deleteMovie(movies:Movie) =viewModelScope.launch {
-        moviesRepo.deleteMovie(movies)
-    }
+
 
     fun  updateMoviesDataAndApi() = viewModelScope.launch {
 
@@ -145,19 +130,19 @@ fun searchMovie(keyword: String){
 
     }
 
-    suspend fun getMovie(id:Int) :Boolean {
-        var movie :Movie?= null
-        viewModelScope.async {
-             movie = moviesRepo.getMovie(id)
-
-        }.await()
-
-        if (movie == null){
-            return false
-        }else{
-            return true
-        }
-    }
+//    suspend fun getMovie(id:Int) :Boolean {
+//        var movie :Movie?= null
+//        viewModelScope.async {
+//             movie = moviesRepo.getMovie(id)
+//
+//        }.await()
+//
+//        if (movie == null){
+//            return false
+//        }else{
+//            return true
+//        }
+//    }
 
 
 

@@ -1,10 +1,7 @@
 package com.example.movies.api
 
-import com.example.movies.models.Movie
-import com.example.movies.models.MovieResponse
-import com.example.movies.models.details.DetailsResponse
-import com.example.movies.utils.Constants.Companion.API_KEY
-import org.intellij.lang.annotations.Language
+import com.example.movies.api.models.MovieResponse
+import com.example.movies.api.models.details.DetailsResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -45,7 +42,6 @@ interface MoviesApi {
     ) : Response<MovieResponse>
     @GET("movie/now_playing")
     suspend fun getNowPlayingMovies(
-
         @Query("page")
         page : Int
 
