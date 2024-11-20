@@ -11,6 +11,7 @@ import com.example.movies.room.MovieEntity
 import com.example.movies.room.MoviesDatabase
 import com.example.movies.room.remotekeys.RemoteKeys
 import com.example.movies.room.toMovieEntity
+import kotlinx.coroutines.delay
 import okio.IOException
 import retrofit2.HttpException
 import java.util.concurrent.TimeUnit
@@ -23,14 +24,26 @@ class NowPlayingMoviesRemoteMediator(private val moviesRepo : MoviesRepoInrerfac
 
 private val CATEGORY_NAME = "NowPlaying"
 
-    override suspend fun initialize(): InitializeAction {
-        val cacheTimeout = TimeUnit.MILLISECONDS.convert(4, TimeUnit.HOURS)
 
-        return if (System.currentTimeMillis() - (moviesDatabase.getRemoteKeysDao().getCreationTime() ?: 0) != cacheTimeout) {
-            InitializeAction.SKIP_INITIAL_REFRESH
-        } else {
-            InitializeAction.LAUNCH_INITIAL_REFRESH
+    override suspend fun initialize(): InitializeAction {
+        if (moviesDatabase.getRemoteKeysDao().getCreationTime(CATEGORY_NAME) != null){
+
+            val cacheTimeout = TimeUnit.MILLISECONDS.convert(4, TimeUnit.HOURS)
+
+          Log.d("CREATION_TIME",moviesDatabase.getRemoteKeysDao().getCreationTime(CATEGORY_NAME).toString() +"And"+ System.currentTimeMillis().toString() )
+
+            return if (System.currentTimeMillis() - (moviesDatabase.getRemoteKeysDao().getCreationTime(CATEGORY_NAME)!!) == cacheTimeout) {
+               Log.d("Scheduled_Refresh","True")
+                InitializeAction.LAUNCH_INITIAL_REFRESH
+            } else {
+
+                InitializeAction.SKIP_INITIAL_REFRESH
+
+            }
+        }else{
+           return InitializeAction.LAUNCH_INITIAL_REFRESH
         }
+
     }
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, MovieEntity>): MediatorResult {
@@ -39,22 +52,20 @@ private val CATEGORY_NAME = "NowPlaying"
             val currentPage = when(loadType){
 
                 LoadType.PREPEND -> {
-                    val remoteKeys = getRemoteKeyForFirstItem(state)
-                    val prevPage = remoteKeys?.prevKey?: return MediatorResult.Success(
-                        endOfPaginationReached = remoteKeys != null
-                    )
-                    prevPage
+                    return MediatorResult.Success(endOfPaginationReached = true)
 
                 }
                 LoadType.APPEND -> {
                     Log.d("POPULAR_REMOTE_MEDIATOR","append nowplaying")
-                    val remoteKeys = getRemoteKeyForLastItem(state)
+                    val remoteKeys = getRemoteKeyForFirstItem(state)
+
                     val nextKey = remoteKeys?.nextKey
                      Log.d("NEXTKEy",nextKey.toString())
                     nextKey ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
                 }
 
                 LoadType.REFRESH ->{
+                    Log.d("POPULAR_REMOTE_MEDIATOR","Refresh nowplaying")
                     val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
                     remoteKeys?.nextKey?.minus(1) ?: 1
                 }
@@ -72,8 +83,10 @@ private val CATEGORY_NAME = "NowPlaying"
 Log.d("END_OF_PAG",endOfPaginationReached.toString())
 
     moviesDatabase.withTransaction {
+
+
         if (loadType == LoadType.REFRESH) {
-            moviesDatabase.getRemoteKeysDao().clearRemoteKeys()
+            moviesDatabase.getRemoteKeysDao().clearRemoteKeysWithCategory(CATEGORY_NAME)
             moviesDatabase.getMoviesDao().deleteMoviesWithCategory(CATEGORY_NAME)
         }
         val prevKey = if (currentPage > 1) currentPage.minus(1)  else -1
@@ -85,12 +98,13 @@ Log.d("END_OF_PAG",endOfPaginationReached.toString())
                 id = it.id!!,
                 prevKey = prevKey,
                 nextKey = nextKey,
+                category = CATEGORY_NAME
             )
         }
 
 
         moviesDatabase.getRemoteKeysDao().insertAll(remoteKeys)
-
+        delay(3000L)
         val nowPlayingMoviesEntities = nowPlayingMovies.map { it.toMovieEntity(CATEGORY_NAME) }
 
         moviesDatabase.getMoviesDao().upsertAllMovies(nowPlayingMoviesEntities)

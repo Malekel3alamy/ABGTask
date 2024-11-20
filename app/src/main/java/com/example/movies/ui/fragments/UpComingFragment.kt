@@ -38,7 +38,7 @@ class UpComingFragment : Fragment(R.layout.fragment_up_coming) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentUpComingBinding.bind(view)
-        (activity as MainActivity).showToolbarAndNavigationView()
+
         setUpRecycler()
 
        moviesAdapter.onMovieClick={ movie ->

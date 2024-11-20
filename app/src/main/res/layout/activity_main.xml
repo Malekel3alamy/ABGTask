@@ -7,41 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation_view"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        app:shapeAppearanceOverlay="@style/CutCorners"
-       app:itemIconTint="@color/orange"
-        android:background="@color/background_color"
-        android:textAlignment="center"
-        app:itemTextAppearanceActiveBoldEnabled="true"
-        app:labelVisibilityMode="unlabeled"
-        android:pointerIcon="text"
-        app:itemTextColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:itemActiveIndicatorStyle="@android:color/transparent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_navigation_item" />
-    <View
-        android:id="@+id/line"
-        android:visibility="visible"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/orange"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
 
     <FrameLayout
         android:id="@+id/f1Fragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toTopOf="@id/line"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"

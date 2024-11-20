@@ -20,7 +20,22 @@ class TopRatedMoviesRemoteMediator(private val moviesRepo : MoviesRepoInrerface,
 
     private val CATEGORY_NAME = "TopRated"
 
+    override suspend fun initialize(): InitializeAction {
+        if (moviesDatabase.getRemoteKeysDao().getCreationTime(CATEGORY_NAME) != null){
+            val cacheTimeout = TimeUnit.MILLISECONDS.convert(4, TimeUnit.HOURS)
 
+            return if (System.currentTimeMillis() - (moviesDatabase.getRemoteKeysDao().getCreationTime(CATEGORY_NAME)!!) == cacheTimeout) {
+                InitializeAction.LAUNCH_INITIAL_REFRESH
+            } else {
+
+                InitializeAction.SKIP_INITIAL_REFRESH
+
+            }
+        }else{
+            return InitializeAction.LAUNCH_INITIAL_REFRESH
+        }
+
+    }
     override suspend fun load(loadType: LoadType, state: PagingState<Int, MovieEntity>): MediatorResult {
         return try {
             val currentPage = when(loadType){
@@ -45,10 +60,6 @@ class TopRatedMoviesRemoteMediator(private val moviesRepo : MoviesRepoInrerface,
 
                 LoadType.REFRESH ->{
                     Log.d("POPULAR_REMOTE_MEDIATOR","refresh topRated ")
-//                    moviesDatabase.withTransaction {
-//                        moviesDatabase.getRemoteKeysDao().clearRemoteKeys()
-//                        moviesDatabase.getMoviesDao().deleteMoviesWithCategory(CATEGORY_NAME)
-//                    }
                     val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
                     remoteKeys?.nextKey?.minus(1) ?: 1
                 }
@@ -61,10 +72,10 @@ class TopRatedMoviesRemoteMediator(private val moviesRepo : MoviesRepoInrerface,
                 val endOfPaginationReached = it.results.isEmpty()
 
                 moviesDatabase.withTransaction {
-//                    if (loadType == LoadType.REFRESH) {
-//                        moviesDatabase.getRemoteKeysDao().clearRemoteKeys()
-//                        moviesDatabase.getMoviesDao().deleteAllMovies()
-//                    }
+                    if (loadType == LoadType.REFRESH) {
+                        moviesDatabase.getRemoteKeysDao().clearRemoteKeysWithCategory(CATEGORY_NAME)
+                        moviesDatabase.getMoviesDao().deleteMoviesWithCategory(CATEGORY_NAME)
+                    }
 
                     val prevKey = if (currentPage > 1) currentPage.minus(1)  else -1
                     val nextKey = if (endOfPaginationReached) null else currentPage.plus(1)
@@ -73,7 +84,8 @@ class TopRatedMoviesRemoteMediator(private val moviesRepo : MoviesRepoInrerface,
                         RemoteKeys(
                             id = it.id!!,
                             prevKey = prevKey,
-                            nextKey = nextKey
+                            nextKey = nextKey,
+                            category = CATEGORY_NAME
                         )
                     }
                     Log.d("REMOTEKEYSTOPRATED",remoteKeys.toString())

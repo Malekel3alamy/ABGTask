@@ -36,7 +36,7 @@ class PopularFragment : Fragment(R.layout.fragment_popular) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentPopularBinding.bind(view)
-        (activity as MainActivity).showToolbarAndNavigationView()
+
         setUpRecycler()
 
 
@@ -61,7 +61,7 @@ class PopularFragment : Fragment(R.layout.fragment_popular) {
     private fun observePopularMovies(){
         this.lifecycleScope.launch(Dispatchers.IO) {
             moviesViewModel.popularMovies.collectLatest{popularMovies ->
-                delay(2000L)
+
                 withContext(Dispatchers.Main){
                     hideProgressBar()
                     moviesAdapter .submitData(popularMovies)

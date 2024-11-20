@@ -24,14 +24,20 @@ class UpComingMoviesRemoteMediator(private val moviesRepo : MoviesRepoInrerface,
     private val CATEGORY_NAME = "UpComing"
 
     override suspend fun initialize(): InitializeAction {
+        if (moviesDatabase.getRemoteKeysDao().getCreationTime(CATEGORY_NAME) != null){
+            val cacheTimeout = TimeUnit.MILLISECONDS.convert(4, TimeUnit.HOURS)
 
-        val cacheTimeout = TimeUnit.MILLISECONDS.convert(4, TimeUnit.HOURS)
+            return if (System.currentTimeMillis() - (moviesDatabase.getRemoteKeysDao().getCreationTime(CATEGORY_NAME)!!) == cacheTimeout) {
+                InitializeAction.LAUNCH_INITIAL_REFRESH
+            } else {
 
-        return if (System.currentTimeMillis() - (moviesDatabase.getRemoteKeysDao().getCreationTime() ?: 0) != cacheTimeout) {
-            InitializeAction.SKIP_INITIAL_REFRESH
-        } else {
-            InitializeAction.LAUNCH_INITIAL_REFRESH
+                InitializeAction.SKIP_INITIAL_REFRESH
+
+            }
+        }else{
+            return InitializeAction.LAUNCH_INITIAL_REFRESH
         }
+
     }
     override suspend fun load(loadType: LoadType, state: PagingState<Int, MovieEntity>): MediatorResult {
         return try {
@@ -62,7 +68,7 @@ class UpComingMoviesRemoteMediator(private val moviesRepo : MoviesRepoInrerface,
                 val endOfPaginationReached = it.results.isEmpty()
                 moviesDatabase.withTransaction {
                     if (loadType == LoadType.REFRESH) {
-                        moviesDatabase.getRemoteKeysDao().clearRemoteKeys()
+                        moviesDatabase.getRemoteKeysDao().clearRemoteKeysWithCategory(CATEGORY_NAME)
                         moviesDatabase.getMoviesDao().deleteMoviesWithCategory(CATEGORY_NAME)
                     }
                     val prevKey = if (currentPage > 1) currentPage.minus(1)  else -1
@@ -73,6 +79,7 @@ class UpComingMoviesRemoteMediator(private val moviesRepo : MoviesRepoInrerface,
                             id = it.id!!,
                             prevKey = prevKey,
                             nextKey = nextKey,
+                            category = CATEGORY_NAME
                         )
                     }
 

@@ -38,7 +38,7 @@ class TopRatedFragment : Fragment(R.layout.fragment_top_rated) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTopRatedBinding.bind(view)
-        (activity as MainActivity).showToolbarAndNavigationView()
+
         setUpRecycler()
 
         moviesAdapter.onMovieClick={ movie ->

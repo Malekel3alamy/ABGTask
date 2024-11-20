@@ -31,7 +31,7 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing) {
         super.onStart()
 
         showProgressBar()
-
+        observeMovies()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,13 +50,14 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing) {
             ite_view_error.visibility = View.GONE
         }
 
+        if (!moviesViewModel.internetConnection(requireContext())){
+            Toast.makeText(requireContext(),"Please Connect To Internet",Toast.LENGTH_SHORT).show()
+        }
+
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        observeMovies()
-    }
+
 
 
     private fun setUpRecycler(){

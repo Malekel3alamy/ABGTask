@@ -26,7 +26,22 @@ class PopularMoviesRemoteMediator(private val moviesRepo : MoviesRepoInrerface, 
     private val CATEGORY_NAME = "Popular"
 
 
+    override suspend fun initialize(): InitializeAction {
+        if (moviesDatabase.getRemoteKeysDao().getCreationTime(CATEGORY_NAME) != null){
+            val cacheTimeout = TimeUnit.MILLISECONDS.convert(4, TimeUnit.HOURS)
 
+            return if (System.currentTimeMillis() - (moviesDatabase.getRemoteKeysDao().getCreationTime(CATEGORY_NAME)!!) == cacheTimeout) {
+                InitializeAction.LAUNCH_INITIAL_REFRESH
+            } else {
+
+                InitializeAction.SKIP_INITIAL_REFRESH
+
+            }
+        }else{
+            return InitializeAction.LAUNCH_INITIAL_REFRESH
+        }
+
+    }
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, MovieEntity>): MediatorResult {
         return  try {
@@ -66,8 +81,8 @@ class PopularMoviesRemoteMediator(private val moviesRepo : MoviesRepoInrerface, 
                 moviesDatabase.withTransaction {
 
                     if (loadType == LoadType.REFRESH) {
-                        moviesDatabase.getRemoteKeysDao().clearRemoteKeys()
-                        moviesDatabase.getMoviesDao().deleteAllMovies()
+                        moviesDatabase.getRemoteKeysDao().clearRemoteKeysWithCategory(CATEGORY_NAME)
+                        moviesDatabase.getMoviesDao().deleteMoviesWithCategory(CATEGORY_NAME)
                     }
                     val prevKey = if (currentPage > 1) currentPage - 1 else null
                     val nextKey = if (endOfPaginationReached) null else currentPage + 1
@@ -76,7 +91,8 @@ class PopularMoviesRemoteMediator(private val moviesRepo : MoviesRepoInrerface, 
                         RemoteKeys(
                             id =it.id!! ,
                             prevKey = prevKey,
-                            nextKey = nextKey
+                            nextKey = nextKey,
+                            category = CATEGORY_NAME
                         )
                     }
 

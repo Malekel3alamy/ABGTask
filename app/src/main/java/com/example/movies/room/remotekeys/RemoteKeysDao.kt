@@ -16,7 +16,10 @@ interface RemoteKeysDao {
     @Query("Delete From remote_key")
     suspend fun clearRemoteKeys()
 
+    @Query("Delete From remote_key WHERE category = :category")
+    suspend fun clearRemoteKeysWithCategory(category: String)
 
-    @Query("Select created_at From remote_key Order By created_at DESC LIMIT 1")
-    suspend fun getCreationTime(): Long?
+
+    @Query("Select created_at From remote_key WHERE category = :category Order By created_at DESC LIMIT 1")
+    suspend fun getCreationTime(category:String): Long?
 }

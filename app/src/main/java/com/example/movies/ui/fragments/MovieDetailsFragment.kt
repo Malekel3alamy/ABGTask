@@ -37,7 +37,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
         // Getting Movie Id
         if (arguments!= null){
-            (activity as MainActivity).hideToolbarAndNavigationView()
      val movie:MovieEntity? = arguments?.getParcelable("movie")
     if (movie!!.id != null){
         moviesViewModel.getMovieDetails( movie.id!!)
