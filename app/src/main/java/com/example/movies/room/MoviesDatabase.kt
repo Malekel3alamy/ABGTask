@@ -10,7 +10,7 @@ import com.example.movies.room.remotekeys.RemoteKeys
 import com.example.movies.room.remotekeys.RemoteKeysDao
 
 @Database(
-    entities = [Movie::class,RemoteKeys::class],
+    entities = [MovieEntity::class,RemoteKeys::class],
     version = 1
 )
 @TypeConverters(Converters::class)
@@ -21,8 +21,6 @@ import com.example.movies.room.remotekeys.RemoteKeysDao
 
 
      companion object{
-
-
 
          @Volatile
          private var instance : MoviesDatabase? = null

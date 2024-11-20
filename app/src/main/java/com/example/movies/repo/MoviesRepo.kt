@@ -5,6 +5,7 @@ import com.example.movies.api.RetrofitInstance
 import com.example.movies.api.models.Movie
 import com.example.movies.api.models.MovieResponse
 import com.example.movies.api.models.details.DetailsResponse
+import com.example.movies.api.models.images.ImagesResponse
 import com.example.movies.room.MovieEntity
 import com.example.movies.room.MoviesDatabase
 import com.example.movies.utils.Resources
@@ -123,13 +124,28 @@ return try{
 
 
    // Insert Data To Room
-    override suspend fun  upsertAllMovies(movies:List<Movie>)  = db.getMoviesDao().upsertAllMovies(movies)
+    override suspend fun  upsertAllMovies(movies:List<MovieEntity>)  = db.getMoviesDao().upsertAllMovies(movies)
 
    // Delete All Room Database
     override suspend fun deleteAll() = db.getMoviesDao().deleteAllMovies()
 
    // Get All Data From Room
-     override suspend   fun getAllData(): LiveData<List<Movie>> = db.getMoviesDao().getAllMovies()
+     override suspend   fun getAllData(): LiveData<List<MovieEntity>> = db.getMoviesDao().getAllMovies()
+
+    override suspend fun getMovieImages(id: Int): Resources<ImagesResponse> {
+        val response = RetrofitInstance.api.getMovieImages(id)
+        return try {
+            if (response.isSuccessful){
+               response.body()?.let {
+                   Resources.Success(it)
+               }?:Resources.Error(" An UnKnown Error Occured " ,null)
+            }else{
+                Resources.Error(" An UnKnown Error Occured " ,null)
+            }
+        }catch (e:Exception){
+            Resources.Error(" An UnKnown Error Occured " ,null)
+        }
+    }
 
 
 }

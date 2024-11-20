@@ -30,6 +30,7 @@ class PopularFragment : Fragment(R.layout.fragment_popular) {
         super.onStart()
 
         showProgressBar()
+        observePopularMovies()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,6 +38,9 @@ class PopularFragment : Fragment(R.layout.fragment_popular) {
         binding = FragmentPopularBinding.bind(view)
         (activity as MainActivity).showToolbarAndNavigationView()
         setUpRecycler()
+
+
+
 
         moviesAdapter.onMovieClick = { movie ->
 
@@ -48,20 +52,25 @@ class PopularFragment : Fragment(R.layout.fragment_popular) {
         }
 
 
-        lifecycleScope.launch {
+
+
+
+
+    }
+
+    private fun observePopularMovies(){
+        this.lifecycleScope.launch(Dispatchers.IO) {
             moviesViewModel.popularMovies.collectLatest{popularMovies ->
                 delay(2000L)
                 withContext(Dispatchers.Main){
-                    Log.d("INSIDE_COROUTINE","INSIDE")
                     hideProgressBar()
+                    moviesAdapter .submitData(popularMovies)
                 }
-                moviesAdapter .submitData(popularMovies)
+
+
 
             }
         }
-
-
-
     }
 
     private fun setUpRecycler(){

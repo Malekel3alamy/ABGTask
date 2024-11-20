@@ -17,6 +17,7 @@ import com.example.movies.R
 import com.example.movies.adapter.MovieRecyclerAdapter
 import com.example.movies.adapter.SearchAdapter
 import com.example.movies.databinding.FragmentSearchBinding
+import com.example.movies.room.toMovieEntity
 import com.example.movies.ui.MainActivity
 import com.example.movies.ui.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,8 +42,9 @@ class SearchFragment() : Fragment(R.layout.fragment_search) {
         moviesAdapter.onMovieClick={ movie ->
 
             val bundle = Bundle().apply {
+
                 if (movie.id != null)
-                    putParcelable("movie", movie)
+                    putParcelable("movie",movie.toMovieEntity(""))
             }
             findNavController().navigate(R.id.action_searchFragment_to_moviesFragment,bundle)
         }

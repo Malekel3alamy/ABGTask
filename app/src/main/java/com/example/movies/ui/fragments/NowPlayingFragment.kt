@@ -22,6 +22,7 @@ import kotlinx.coroutines.withContext
 @AndroidEntryPoint
 class NowPlayingFragment : Fragment(R.layout.fragment_now_playing) {
      val moviesViewModel: MoviesViewModel by viewModels()
+
     lateinit var binding: FragmentNowPlayingBinding
     private lateinit var nowPlayingMoviesAdapter : MovieRecyclerAdapter
     lateinit var ite_view_error : View
@@ -30,27 +31,33 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing) {
         super.onStart()
 
         showProgressBar()
+
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentNowPlayingBinding.bind(view)
 
-
         setUpRecycler()
         handleClickOnNowPlayingAdapter()
 
 
-        ObserveMovies()
 
         // handle internet error
         ite_view_error = view.findViewById<View>(R.id.itemMoviesError)
         binding.itemMoviesError.retryButton.setOnClickListener {
 
-            ObserveMovies()
+            observeMovies()
             ite_view_error.visibility = View.GONE
         }
 
+
     }
+
+    override fun onResume() {
+        super.onResume()
+        observeMovies()
+    }
+
 
     private fun setUpRecycler(){
         nowPlayingMoviesAdapter = MovieRecyclerAdapter()
@@ -76,20 +83,22 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing) {
         }
     }
 
-private fun ObserveMovies(){
+private fun observeMovies(){
 
-    lifecycleScope.launch(Dispatchers.IO) {
+   this.lifecycleScope.launch(Dispatchers.IO) {
+       moviesViewModel.nowPlayingMovies.collectLatest{nowPlayingMovies ->
+           delay(2000L)
+           withContext(Dispatchers.Main){
+               hideProgressBar()
+           }
 
-        moviesViewModel.nowPlayingMovies.collectLatest{nowPlayingMovies ->
-            delay(2000L)
-            withContext(Dispatchers.Main){
+           nowPlayingMoviesAdapter.submitData(nowPlayingMovies)
 
-                hideProgressBar()
-            }
-            nowPlayingMoviesAdapter.submitData(nowPlayingMovies)
+       }
 
-        }
-    }
+   }
+
+
 
 }
 

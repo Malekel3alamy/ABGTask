@@ -14,8 +14,10 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.movies.R
 import com.example.movies.api.models.Movie
+import com.example.movies.room.MovieEntity
+import com.example.movies.utils.Constants.Companion.IMAGE_PATH
 
-class MovieRecyclerAdapter : PagingDataAdapter<Movie, com.example.movies.adapter.MovieRecyclerAdapter.MyViewHolder>(
+class MovieRecyclerAdapter : PagingDataAdapter<MovieEntity, com.example.movies.adapter.MovieRecyclerAdapter.MyViewHolder>(
     differCallback ) {
     class MyViewHolder (val view : View) : ViewHolder(view){
 
@@ -42,7 +44,7 @@ if (movie != null){
     Log.d("MovieName",movie.title.toString())
     val average = movie.vote_average?.toFloat()
     holder.tvRating.text = String.format("%1.1f",average)
-    Glide.with(holder.itemView).load("https://image.tmdb.org/t/p/w500/${movie.poster_path}").into(holder.movieImage)
+    Glide.with(holder.itemView).load("$IMAGE_PATH${movie.poster_path}").into(holder.movieImage)
 
     holder.itemView. setOnClickListener{
         onMovieClick?.invoke(movie)
@@ -51,17 +53,17 @@ if (movie != null){
 
     }
 
-    var onMovieClick : ((Movie) -> Unit)? = null
+    var onMovieClick : ((MovieEntity) -> Unit)? = null
 
 
 
  companion object{
-     val differCallback = object : DiffUtil.ItemCallback<Movie>() {
-         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-             return oldItem.title == newItem.title
+     val differCallback = object : DiffUtil.ItemCallback<MovieEntity>() {
+         override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+             return oldItem.id == newItem.id
          }
 
-         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+         override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
              return oldItem == newItem
          }
 

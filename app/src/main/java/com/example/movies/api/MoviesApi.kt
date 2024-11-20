@@ -2,6 +2,7 @@ package com.example.movies.api
 
 import com.example.movies.api.models.MovieResponse
 import com.example.movies.api.models.details.DetailsResponse
+import com.example.movies.api.models.images.ImagesResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -50,6 +51,13 @@ interface MoviesApi {
     @GET("movie/{movie_id}")
     suspend fun getDetails(
         @Path("movie_id")
-        movie_id:Int
+        movieId:Int
     ):Response<DetailsResponse>
+
+    @GET("movie/{movie_id}/images")
+    suspend fun getMovieImages (
+        @Path("movie_id")
+        movieId:Int
+    ):Response<ImagesResponse>
+
 }

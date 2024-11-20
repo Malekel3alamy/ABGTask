@@ -6,29 +6,35 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.movies.api.models.Movie
 
 
 @Dao
 interface MoviesDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertAllMovies(result :List<Movie>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun upsertAllMovies(result :List<MovieEntity>)
 
-    @Query(" SELECT * FROM  movies")
-     fun getAllMovies() : LiveData<List<Movie>>
+    @Query("SELECT * FROM  movies")
+     fun getAllMovies() : LiveData<List<MovieEntity>>
 
-//    @Query("SELECT * FROM movies WHERE id = :id")
-//    suspend fun getMovie(id:Int) : Movie
+    @Query("SELECT * FROM  movies")
+    fun getAllMoviesEntities() : PagingSource<Int,MovieEntity>
 
-    @Query("DELETE FROM movies")
+
+
+    @Query("DELETE FROM movies WHERE category =:category")
+    suspend fun deleteMoviesWithCategory(category: String)
+
+    @Query("DELETE  FROM movies")
     suspend fun deleteAllMovies()
 
-//    @Delete
-//    suspend fun deleteMovie(movie: Movie)
 
-    @Query(" SELECT * FROM  movies")
-    fun pagingSource() : PagingSource<Int, Movie>
+    @Query("SELECT * FROM  movies WHERE category = :category")
+     fun getMoviesByCategories(category:String):PagingSource<Int,MovieEntity>
+
+
+
+
 
 
 

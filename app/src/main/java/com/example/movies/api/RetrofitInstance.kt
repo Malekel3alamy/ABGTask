@@ -44,7 +44,3 @@ class RetrofitInstance {
 
 
 }
-    /*  val api: MoviesApi by lazy {
-            retrofit.create(MoviesApi::class.java)
-
-        }*/

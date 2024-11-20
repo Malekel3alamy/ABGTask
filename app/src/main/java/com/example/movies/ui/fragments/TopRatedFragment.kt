@@ -31,6 +31,7 @@ class TopRatedFragment : Fragment(R.layout.fragment_top_rated) {
         super.onStart()
 
         showProgressBar()
+        observeTopRatedMovies()
     }
 
 
@@ -50,27 +51,20 @@ class TopRatedFragment : Fragment(R.layout.fragment_top_rated) {
         }
 
 
-
-       lifecycleScope.launch {
-           moviesViewModel.topRatedMovies.collectLatest { topRatedMovies ->
-               delay(2000L)
-               withContext(Dispatchers.Main){
-                   hideProgressBar()
-               }
-               moviesAdapter.submitData(topRatedMovies)
-           }
-       }
-
-
-
-
-
-
-
-
-
     }
 
+
+    private fun observeTopRatedMovies(){
+        this.lifecycleScope.launch {
+            moviesViewModel.topRatedMovies.collectLatest { topRatedMovies ->
+                delay(2000L)
+                withContext(Dispatchers.Main){
+                    hideProgressBar()
+                }
+                moviesAdapter.submitData(topRatedMovies)
+            }
+        }
+    }
     private fun setUpRecycler(){
         moviesAdapter = MovieRecyclerAdapter()
 

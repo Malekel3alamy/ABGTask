@@ -125,6 +125,9 @@ dependencies {
     implementation ("com.google.dagger:hilt-android:2.52")
     kapt ("com.google.dagger:hilt-android-compiler:2.52")
 
+    // Dots Indicator
+    implementation("com.tbuonomo:dotsindicator:5.1.0")
+
     // Pagination
    // implementation("com.github.paginationspring:pagination:1.0.3")
 

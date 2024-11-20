@@ -30,6 +30,8 @@ class UpComingFragment : Fragment(R.layout.fragment_up_coming) {
         super.onStart()
 
         showProgressBar()
+        observeUpComingMovies()
+
     }
 
 
@@ -48,8 +50,10 @@ class UpComingFragment : Fragment(R.layout.fragment_up_coming) {
            findNavController().navigate(R.id.action_homeFragment_to_moviesFragment,bundle)
        }
 
+    }
 
-        lifecycleScope.launch {
+    private fun observeUpComingMovies(){
+        this.lifecycleScope.launch {
             moviesViewModel.upcomingMovies.collectLatest { upcomingMovies ->
                 delay(2000L)
                 withContext(Dispatchers.Main){
@@ -59,16 +63,14 @@ class UpComingFragment : Fragment(R.layout.fragment_up_coming) {
                 moviesAdapter.submitData(upcomingMovies)
             }
         }
-
     }
-
     private fun setUpRecycler(){
         moviesAdapter = MovieRecyclerAdapter()
 
         binding.recyclerUpcoming.apply {
             adapter = moviesAdapter
             layoutManager = GridLayoutManager(requireContext(),2)
-
+            itemAnimator?.endAnimations()
         }
     }
 
