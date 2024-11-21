@@ -54,7 +54,7 @@ The app follows the MVVM (Model-View-ViewModel) architecture pattern:
 
 - Use the search feature to find specific movies.
 - Tap on a movie to view detailed information.
-- Add movies to your favorites for quick access.
+
   
 **Contributing**
 - Contributions are welcome! Please fork the repository and submit a pull request with your changes.
