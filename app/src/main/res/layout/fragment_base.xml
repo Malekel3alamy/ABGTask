@@ -22,13 +22,13 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/top_rated_and_upcoming_movie_item"
+            tools:listitem="@layout/movie_item"
             app:layout_constraintVertical_bias="0.0" />
 
 
         <include
             android:id="@+id/itemMoviesError"
-            layout="@layout/item_error"
+            layout="@layout/snack_bar_layout"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="200dp"

@@ -1,18 +1,10 @@
 package com.example.movies.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movies.R
-import com.example.movies.adapter.MovieRecyclerAdapter
-import com.example.movies.databinding.FragmentUpComingBinding
-import com.example.movies.ui.MainActivity
-import com.example.movies.ui.MoviesViewModel
+import com.example.movies.databinding.FragmentBaseBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -21,10 +13,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class UpComingFragment : Fragment(R.layout.fragment_up_coming) {
-    val moviesViewModel: MoviesViewModel by viewModels()
-    lateinit var binding: FragmentUpComingBinding
-    lateinit var moviesAdapter : MovieRecyclerAdapter
+class UpComingFragment : BaseFragment() {
+
 
     override fun onStart() {
         super.onStart()
@@ -37,18 +27,14 @@ class UpComingFragment : Fragment(R.layout.fragment_up_coming) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentUpComingBinding.bind(view)
+        binding = FragmentBaseBinding.bind(view)
 
         setUpRecycler()
 
-       moviesAdapter.onMovieClick={ movie ->
 
-           val bundle = Bundle().apply {
-               if (movie.id != null)
-                   putParcelable("movie", movie)
-           }
-           findNavController().navigate(R.id.action_homeFragment_to_moviesFragment,bundle)
-       }
+        checkInternet()
+         handleClickOnMovieAdapter(R.id.action_homeFragment_to_moviesFragment)
+
 
     }
 
@@ -63,28 +49,6 @@ class UpComingFragment : Fragment(R.layout.fragment_up_coming) {
                 moviesAdapter.submitData(upcomingMovies)
             }
         }
-    }
-    private fun setUpRecycler(){
-        moviesAdapter = MovieRecyclerAdapter()
-
-        binding.recyclerUpcoming.apply {
-            adapter = moviesAdapter
-            layoutManager = GridLayoutManager(requireContext(),2)
-            itemAnimator?.endAnimations()
-        }
-    }
-
-
-
-    private fun hideProgressBar(){
-        binding.paginationProgressBar.visibility = View.GONE
-
-    }
-
-    private fun showProgressBar(){
-
-        binding.paginationProgressBar.visibility = View.VISIBLE
-
     }
 
 

@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.blureagency.adapters.MovieImagesViewPagerAdapter
 import com.example.movies.R
@@ -20,7 +21,10 @@ import com.example.movies.ui.MainActivity
 import com.example.movies.ui.MoviesViewModel
 import com.example.movies.utils.Resources
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
@@ -29,24 +33,29 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     lateinit var binding : FragmentMovieDetailsBinding
     private lateinit var movieImagesViewPagerAdapter: MovieImagesViewPagerAdapter
 
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMovieDetailsBinding.bind(view)
 
         showPR()
 
+
+
         // Getting Movie Id
-        if (arguments!= null){
-     val movie:MovieEntity? = arguments?.getParcelable("movie")
-    if (movie!!.id != null){
-        moviesViewModel.getMovieDetails( movie.id!!)
-        getMovieImages(movie!!.id!!)
+        if (arguments != null){
+     val movie = arguments?.getParcelable<MovieEntity>("movie")
+    if (movie != null){
+        moviesViewModel.getMovieDetails( movie.id)
+        getMovieImages(movie.id)
     }else{
         Log.d("id","$id")
     }
 }
 
-        observeMovieDetails(view)
+        observeMovieDetails()
 
 
         // handle click on back button
@@ -74,7 +83,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         binding.wormDotsIndicator.attachTo(binding.movieDetailsViewPager)
     }
 
-    private fun observeMovieDetails(view: View){
+    private fun observeMovieDetails(){
         lifecycleScope.launch {
             moviesViewModel.detailsResponse.observe(viewLifecycleOwner, Observer {
                 when(it){
@@ -86,12 +95,12 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                         showPR()
                     }
                     is Resources.Success ->{
+
                         hidePR()
                         it.data.let {
                             binding.detailsTitle.text = it?.title
                             binding.detailsOverview.text=it?.overview
                             binding.movieDetailsFragmentMovieVote.text = "Vote : ${it?.vote_average}"
-
 
                         }
 

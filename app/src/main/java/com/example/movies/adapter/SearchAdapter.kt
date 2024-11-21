@@ -29,7 +29,7 @@ class SearchAdapter: PagingDataAdapter<Movie, SearchAdapter.MyViewHolder>(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.top_rated_and_upcoming_movie_item,parent,false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.movie_item,parent,false)
 
         return MyViewHolder(itemView)
     }

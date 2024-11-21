@@ -12,6 +12,7 @@ import com.example.movies.ui.fragments.PopularFragment
 import com.example.movies.ui.fragments.TopRatedFragment
 import com.example.movies.ui.fragments.UpComingFragment
 import com.example.newsapp.adapters.HomeViewPagerAdapter
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,6 +37,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             TopRatedFragment(),
             UpComingFragment()
         )
+
 
         val homePagerAdapter =  HomeViewPagerAdapter(moviesCategoriesFragments,childFragmentManager,lifecycle)
 

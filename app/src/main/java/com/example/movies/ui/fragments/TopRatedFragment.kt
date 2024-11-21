@@ -10,9 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movies.R
 import com.example.movies.adapter.MovieRecyclerAdapter
-import com.example.movies.databinding.FragmentTopRatedBinding
-import com.example.movies.ui.MainActivity
-import com.example.movies.ui.MoviesViewModel
+import com.example.movies.databinding.FragmentBaseBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -21,34 +19,30 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class TopRatedFragment : Fragment(R.layout.fragment_top_rated) {
-     private val moviesViewModel: MoviesViewModel by viewModels()
-    private lateinit var binding: FragmentTopRatedBinding
-    private lateinit var moviesAdapter : MovieRecyclerAdapter
-
+class TopRatedFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
 
         showProgressBar()
+
+        checkInternet()
+
+
         observeTopRatedMovies()
+
+
+
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentTopRatedBinding.bind(view)
+        binding = FragmentBaseBinding.bind(view)
 
         setUpRecycler()
 
-        moviesAdapter.onMovieClick={ movie ->
-
-            val bundle = Bundle().apply {
-                if (movie.id != null)
-                    putParcelable("movie", movie)
-            }
-            findNavController().navigate(R.id.action_homeFragment_to_moviesFragment,bundle)
-        }
+        handleClickOnMovieAdapter(R.id.action_homeFragment_to_moviesFragment)
 
 
     }
@@ -65,29 +59,7 @@ class TopRatedFragment : Fragment(R.layout.fragment_top_rated) {
             }
         }
     }
-    private fun setUpRecycler(){
-        moviesAdapter = MovieRecyclerAdapter()
 
-        binding.recyclerTopRated.apply {
-            adapter = moviesAdapter
-            layoutManager = GridLayoutManager(requireContext(),2)
-
-        }
-    }
-
-
-
-
-    private fun hideProgressBar(){
-        binding.paginationProgressBar.visibility = View.GONE
-
-    }
-
-    private fun showProgressBar(){
-
-        binding.paginationProgressBar.visibility = View.VISIBLE
-
-    }
 
 
 

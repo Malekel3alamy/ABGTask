@@ -20,6 +20,7 @@ import com.example.movies.databinding.FragmentSearchBinding
 import com.example.movies.room.toMovieEntity
 import com.example.movies.ui.MainActivity
 import com.example.movies.ui.MoviesViewModel
+import com.example.movies.ui.showCustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import okhttp3.internal.notifyAll
@@ -41,13 +42,18 @@ class SearchFragment() : Fragment(R.layout.fragment_search) {
         // handle user click on movie item
         moviesAdapter.onMovieClick={ movie ->
 
+
+
+
             val bundle = Bundle().apply {
 
                 if (movie.id != null)
-                    putParcelable("movie",movie.toMovieEntity(""))
+                    putInt("movie",movie.id!!)
             }
             findNavController().navigate(R.id.action_searchFragment_to_moviesFragment,bundle)
         }
+
+
         binding.backBtnSearch.setOnClickListener {
             findNavController().navigateUp()
         }

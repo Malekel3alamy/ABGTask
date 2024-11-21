@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.movies.R
-import com.example.movies.api.models.Movie
 import com.example.movies.room.MovieEntity
 import com.example.movies.utils.Constants.Companion.IMAGE_PATH
 
@@ -28,7 +27,7 @@ class MovieRecyclerAdapter : PagingDataAdapter<MovieEntity, com.example.movies.a
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.top_rated_and_upcoming_movie_item,parent,false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.movie_item,parent,false)
 
         return MyViewHolder(itemView)
     }

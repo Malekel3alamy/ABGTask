@@ -37,6 +37,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MoviesViewModel @Inject constructor( private val moviesRepo:  MoviesRepoInrerface,private val moviesDatabase: MoviesDatabase) : ViewModel() {
 
+
+
     var detailsResponse =  MutableLiveData<Resources<DetailsResponse>>()
 
     var imageResponse = MutableLiveData<Resources<ImagesResponse>>()
@@ -94,6 +96,8 @@ class MoviesViewModel @Inject constructor( private val moviesRepo:  MoviesRepoIn
         },
         remoteMediator = UpComingMoviesRemoteMediator(moviesRepo,moviesDatabase)).flow.cachedIn(viewModelScope)
 
+
+
 fun searchMovie(keyword: String){
      searchMovies = Pager(PagingConfig(1)){
         SearchMoviesPagingSource(keyword,moviesRepo)
@@ -104,8 +108,10 @@ fun searchMovie(keyword: String){
 
     // get Movie Details
     fun getMovieDetails(movie_id:Int) = viewModelScope.launch {
+
         if (movie_id > 0 && movie_id != null){
             detailsResponse.postValue(Resources.Loading())
+            delay(3000L)
             detailsResponse.postValue( moviesRepo.getDetails(movie_id))
         }else{
             detailsResponse.postValue(Resources.Error("Error With The Movie Id ",null))
