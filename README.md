@@ -5,11 +5,9 @@
 Movie App is an Android application built using Kotlin. It allows users to browse and search for movies, view detailed information about each movie, and manage their favorite movies. The app leverages the MVVM architecture pattern and integrates with The Movie Database (TMDB) API to fetch movie data.
 
 **Features** : 
-- Browse popular movies
+- Browse different categories of movies
 - Search for movies by title
 - View detailed information about each movie
-- Add movies to favorites
-- Responsive UI with support for different screen sizes
 **Screenshots**: 
 
 
@@ -25,9 +23,8 @@ The app follows the MVVM (Model-View-ViewModel) architecture pattern:
 
 - Retrofit: For network requests
 
-- Room Database : 
+- Room Database : local database 
 
-- Work Manager : 
 
 - Glide: For image loading
 
@@ -38,11 +35,13 @@ The app follows the MVVM (Model-View-ViewModel) architecture pattern:
 - DataBinding: For binding UI components to data sources
 
 - Navigation Component: For handling navigation
+- 
+- paging library : for caching data to room and refreshing cached memory 
 
 
 **Setup and Installation** : 
 - Clone the repository:
-- git clone https://github.com/yourusername/movie-app.git
+- git clone https://github.com/Malekel3alamy/ABGTask.git
 
 - Open the project in Android Studio.
 - Add your TMDB API key in the local.properties file:
