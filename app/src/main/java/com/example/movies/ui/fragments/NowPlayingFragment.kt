@@ -31,12 +31,8 @@ class NowPlayingFragment : BaseFragment() {
 
         setUpRecycler()
 
-//           if (!moviesViewModel.internetConnection(requireContext())){
-//               showCustomSnackbar(view,"g",""){
-//                   observeMovies()
-//               }
-//           }
-        //checkInternet()
+
+        checkInternet()
 
         handleClickOnMovieAdapter(R.id.action_homeFragment_to_moviesFragment)
 
@@ -44,7 +40,7 @@ class NowPlayingFragment : BaseFragment() {
 
 
 
-        //  requireContext().showCustomSnackBar(requireView())
+
 
 
 
